@@ -1,0 +1,50 @@
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html lang="jp">
+<head>
+	<meta charset=utf-8>
+	<meta name="viewport" content="width=620">
+	<title>{{ dict.word }}</title>
+	<!--link rel="stylesheet" href="css/html5demos.css"-->
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+	<script src="{% static 'dict/js/dict.formatter.js' %}"></script>
+    <script src="{% static 'dict/js/dict.formatter.weblio.js' %}"></script>
+    <script src="{% static 'dict/js/dict.formatter.weblios.js' %}"></script>
+	<script>
+		dict_type = "{{ dict_type }}";
+        dict_from = "{{ dict.reference }}";
+        // When query.html load
+        $(function(){
+            // convert `&lt;` to `<`
+            var src=$("#src").text();
+            var explain = $.formatDict(src, dict_type, dict_from);
+            if (explain)
+                $("#__explain_wrapper__").empty().append(explain);
+        });
+        console.log(window.location.href);
+	</script>
+	<style>
+        .hide {display:none}
+        pre {
+            overflow: auto;
+            white-space: -moz-pre-wrap; /* Mozilla */
+            white-space: -pre-wrap;     /* Opera 4-6 */
+            white-space: -o-pre-wrap;   /* Opera 7 */
+            white-space: pre-wrap;      /* CSS3 */
+            word-wrap: break-word;      /* IE 5.5+ */
+        }
+	</style>
+</head>
+<body>
+    <div id='__explain_wrapper__'></div>
+    <pre>
+    <a href='#' target='_blank'>Debug link</a>
+    Query of `{{ dict.word}}` from dict `{{ dict_type }}`
+    Proxy of `{{ dict.reference }}`
+    </pre>
+    <div class="hide" id="src">
+        {{ dict.explain }}
+    </div>
+</body>
+</html>

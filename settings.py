@@ -23,6 +23,10 @@ INSTALLED_APPS = (
 
     # djangoappengine should come last, so it can override a few manage.py commands
     'djangoappengine',
+    # Add mine
+    'django.contrib.staticfiles',
+    'dict',
+    
 )
 
 MIDDLEWARE_CLASSES = (
@@ -45,6 +49,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 TEST_RUNNER = 'djangotoolbox.test.CapturingTestSuiteRunner'
 
 STATIC_URL = '/static/'
+STATIC_ROOT = 'static'
 
 TEMPLATE_DIRS = (os.path.join(os.path.dirname(__file__), 'templates'),)
 

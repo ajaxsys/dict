@@ -11,5 +11,6 @@ autoload
 mediagenerator
 filetransfers
 mapreduce
+node_modules
 
 build

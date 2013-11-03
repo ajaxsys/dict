@@ -1,6 +1,7 @@
 from django.conf.urls.defaults import *
 from django.contrib import admin
 import dbindexer
+import dict.urls
 
 handler500 = 'djangotoolbox.errorviews.server_error'
 
@@ -14,4 +15,6 @@ urlpatterns = patterns('',
     ('^_ah/warmup$', 'djangoappengine.views.warmup'),
     ('^$', 'django.views.generic.simple.direct_to_template', {'template': 'home.html'}),
     ('^admin/', include(admin.site.urls)),
+    ('^dict/', include(dict.urls, namespace='dict')),
 )
+ 

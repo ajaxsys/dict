@@ -1,4 +1,4 @@
-application: ctst
+application: python-ok
 version: 1
 runtime: python27
 api_version: 1
@@ -28,6 +28,14 @@ handlers:
 
 - url: /static/admin
   static_dir: django/contrib/admin/static/admin
+  expiration: '0'
+
+- url: /static/dict
+  static_dir: dict/static/dict
+  expiration: '0'
+
+- url: /static
+  static_dir: static
   expiration: '0'
 
 - url: /.*
