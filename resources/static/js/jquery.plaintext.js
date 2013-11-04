@@ -21,7 +21,8 @@ $.fn.plaintext = function(option) {
     var defaultOption = {
         'on' : 'mouseenter',
         'off': 'mouseleave',
-        'delay' : 2000,
+        'delayIn' : 2000,
+        'delayOut' : 3000,
         'color' : '#EF0FFF',
         'bgcolor' : '#FFF'
     }
@@ -31,8 +32,8 @@ $.fn.plaintext = function(option) {
     obj2Text($(this),defaultOption);
 }
 
-var TIMER = "__link_timmer__",
-    TAG_TO_TEXT_CLASS="__tag_to_text_class__";
+
+var TIMER = "__link_timmer__";
 
 function obj2Text($obj, option) {
     // Link to Text
@@ -40,11 +41,7 @@ function obj2Text($obj, option) {
     $obj.on(option.on, function(e){
         var $tag2Txt = $(this);
         console.log("Active Link 2 Text:", $tag2Txt.prop('tagName'));
-        // Already contain obj2text childrens
-        if ($('.'+TAG_TO_TEXT_CLASS, $tag2Txt).length > 0){
-            console.log('Ingnore this obj2txt');
-            return;
-        }
+
         // Already mouse overed
         if ($tag2Txt.data(TIMER)) {
             // Clear the timer before
@@ -68,21 +65,17 @@ function obj2Text($obj, option) {
                     return;
                 }
 
-                // Must clone with event. Or `on` event will lost.
-                var $tag2TxtOrigin = $tag2Txt.clone(true);
-                var $replace = $('<span>');
-                $replace.addClass(TAG_TO_TEXT_CLASS)
-                    .css('backgroundColor',option.bgColor)
-                    .css('color',option.color).text(" "+text+" ");// Add spaces for dblclick
-                // Link to Text
-                $tag2Txt.replaceWith($replace);
-                // Text to Link
-                //$replace.one('mouseout',function(){
-                $replace.one(option.off,function(){
-                    $replace.replaceWith($tag2TxtOrigin);
-                });
+                $tag2Txt.tipsy({
+                    'trigger': 'hover',
+                    'fallback': text,
+                    'delayIn': option.delayIn,
+                    'opacity': 1,
+                    gravity: $.fn.tipsy.autoNS,
+                    'delayOut': option.delayOut
+                }).tipsy("show");
+
             }
-        }, option.delay);
+        }, option.delayIn);
         $tag2Txt.data(TIMER, timer);
         // For img in a link: <a...><img...></a>
         e.stopPropagation();

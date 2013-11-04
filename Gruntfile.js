@@ -55,10 +55,11 @@ module.exports = function(grunt) {
         files: {
           'release/static/dict/pkg/dict_ui.min.css':[
               'resources/static/js/jwe/jquery.windows-engine.css',
+              'resources/static/js/tooltip/tipsy.css',
           ],
           'release/static/dict/pkg/dict_proxy.min.css':[
               'resources/static/js/bootstrap/css/bootstrap.css',
-              'dict/static/dict/css/dict.common.css'
+              'dict/static/dict/css/dict.common.css',
           ],
         },
       }
@@ -77,6 +78,7 @@ module.exports = function(grunt) {
       dict_ui_dev: {
         src: [
           'resources/static/js/jquery.min.js',
+          'resources/static/js/tooltip/jquery.tipsy.js',
           'resources/static/js/jquery.cookie.js',
           'resources/static/js/jquery.plaintext.js',
           'resources/static/js/jwe/jquery.windows-engine.js',
@@ -165,7 +167,9 @@ module.exports = function(grunt) {
 
     watch: {
       src: {
-        files: ['dict/static/dict/js/*.js'],
+        files: ['dict/static/dict/js/*.js',
+                'resources/static/js/jquery.plaintext.js',
+        ],
         tasks: ['jshint','dist']
       },
       // test: {

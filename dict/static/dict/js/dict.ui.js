@@ -20,10 +20,10 @@ var _thisIP,
 
 console = window.console || {'log':function(){}};
 console.log('Loading ui resource...');
-loadResource($, host()+'/static/dict/pkg/dict_ui.min.css', 'css');
+DICT.loadResource($, host()+'/static/dict/pkg/dict_ui.min.css', 'css');
 
-afterWindowLoad($);
-afterPluginLoad($);
+registSelectWord($);
+registLinkToText($);
 
 $( window ).resize(function() {
     resetPositionWhenOverflow($('#'+DICT_ID));
@@ -34,15 +34,15 @@ $( window ).resize(function() {
 //         if ($ && ($ instanceof Function) && ($('<a>') instanceof jQuery)) {
 //             // emove all jQuery variables from the global scope (including jQuery itself).
 //             window.__dict_jquery__ = $.noConflict(true);
-//             console.log("Rescover old jquery, from " + window.__dict_jquery__ + " - "window.__dict_jquery__.fn.jQuery + " to:" + $.fn.jQuery);
+//             console.log("Rescover old jquery, from " + window.__dict_jquery__ + " - " + window.__dict_jquery__.fn.jQuery + " to:" + $.fn.jQuery);
 //         }
 //     },5000);
 // })(window.jQuery);
 
 
-function afterWindowLoad($) {
+function registSelectWord($) {
     //$.newWindow();
-    $('body *:not(div.window-titleBar)').on('mouseup',function(){
+    $(document).on('mouseup','body *:not(div.window-titleBar)',function(){
         if (!DICT_SERVICE){
             return;
         } else {
@@ -56,7 +56,7 @@ function afterWindowLoad($) {
     });
 }
 
-function afterPluginLoad($) {
+function registLinkToText($) {
     $('body a, body img, body select').plaintext();
 }
 
@@ -175,39 +175,6 @@ function getSelectionText() {
         text = document.selection.createRange().text;
     }
     return text;
-}
- 
-
-function loadResource($, rscURL, rscType, callback, tag, done, readystate){
-    console.log('Loading:',rscURL);
-    if (rscType=="js") {
-        // Create a script element.
-        tag = document.createElement( 'script' );
-        tag.type = 'text/javascript';
-        tag.src = rscURL;
-    } else if (rscType=="css") {
-        // Create a css link element.
-        tag = document.createElement( 'link' );
-        tag.type = 'text/css';
-        tag.type = 'text/css';
-        tag.rel = 'stylesheet';
-        tag.href = rscURL;
-    } else {
-        return;
-    }
-    
-    tag.onload = tag.onreadystatechange = function() {
-      if ( !done && ( !( readystate = this.readyState )
-        || readystate == 'loaded' || readystate == 'complete' ) ) {
-
-        if (typeof callback == "function"){
-                callback($);
-        }
-        //$( tag ).remove();
-      }
-    };
-    
-    DICT.appendTag(tag);
 }
 
 function host(lbKey){

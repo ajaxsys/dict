@@ -5,6 +5,7 @@ window.__DICT__ = window.__DICT__ || {};
 $.extend(__DICT__ , {
     'getOptionFromCookie' : getOptionFromCookie,
     'setOptionToCookie' : setOptionToCookie,
+    'loadResource' : loadResource,
 });
 
 ////////////////////////// COMMONS ////////////////////

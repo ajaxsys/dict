@@ -48,8 +48,8 @@ $(function(){
 
         // Enable by default
         updateDevelopLink(toOneLine(__G_BML__));
-        // console.log("Default enable dict on this page.");
-        // eval(__G_BML__);
+        console.log("Default enable dict on this page.");
+        eval(__G_BML__);
     }
 
     // Wait until condition var `==` true
