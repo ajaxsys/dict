@@ -55,7 +55,7 @@ $.extend({
         var idAttr = "";
         if (options.id != "") idAttr = 'id="' + options.id + '"';
         var $modalBackground = $('<div class="modal-background"></div>');
-        $modalBackground.css("z-index","2147483601");
+        $modalBackground.css("z-index","2147483600");// Bg, smaller
         var $windowContainer = $('<div ' + idAttr + ' class="window-container"></div>');
         var $titleBar = $('<div class="window-titleBar"></div>');
         $titleBar.append('<div class="window-titleBar-leftCorner"></div>');
@@ -92,14 +92,28 @@ $.extend({
             document.onselectstart = null;
         }
         
-        var jqWindowsEngineZIndex = 99000;
+        // $.fn.extend({
+        //     getMaxZ : function(){
+        //         return Math.max.apply(null, jQuery(this).map(function(){
+        //             var z = parseInt(jQuery(this).css("z-index").replace('!important',''), 10);
+        //             return isNaN(z) ? 0 : z;
+        //         }));
+        //     }
+        // });
+
+        // var jqWindowsEngineZIndex = $('body *').getMaxZ(), // Max z-index on page
+        //     MAX_Z_INDEX = 2147483647;
+
+        // var setFocus = function($obj) {
+        //     if(options.modal){
+        //         $obj.css("z-index", MAX_Z_INDEX);
+        //     }
+        //     else{
+        //         $obj.css("z-index", (++jqWindowsEngineZIndex) >= MAX_Z_INDEX ? MAX_Z_INDEX : jqWindowsEngineZIndex );
+        //     }
+        // }
         var setFocus = function($obj) {
-            if(options.modal){
-                $obj.css("z-index", 2147483647);
-            }
-            else{
-                $obj.css("z-index", jqWindowsEngineZIndex++);
-            }
+            $obj.css("z-index", 2147483647);
         }
 
         var resize = function($obj, width, height) {
