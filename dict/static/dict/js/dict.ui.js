@@ -243,7 +243,7 @@ function host(lbKey){
     return dev_ip;
 }
 
-//indow.__dict_loaded__=true;
+window.__DICT__.loaded=true;
 $.noConflict();
 
 })(jQuery);

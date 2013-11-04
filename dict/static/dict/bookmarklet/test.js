@@ -48,14 +48,16 @@ $(function(){
 
         // Enable by default
         updateDevelopLink(toOneLine(__G_BML__));
-        console.log("Default enable dict on this page.");
-        eval(__G_BML__);
+        console.log("Default enable dict on this page in 3 seconds.");
+        setTimeout(function(){
+            eval(__G_BML__);
+        },3000);
     }
 
     // Wait until condition var `==` true
     function waitUntil(condition, callback) {
         eval(' var result = (' + condition +')' );
-        console.log('result = ' + result);
+        //console.log('result = ' + result);
         if (result) {
             callback();
         } else {
