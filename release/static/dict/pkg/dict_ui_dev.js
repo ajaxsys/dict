@@ -991,8 +991,9 @@ __DICT__.appendTag = function (node) {
     if (tag){
         tag.appendChild(node);
     } else {
-        alert('Sorry, Not support for your browser. More details, visit: ¥n http://dict-admin.appspot.com');
-
+        var url = 'http://dict-admin.appspot.com';
+        alert('Sorry, Not support for your browser. More details, visit: '+url);
+        window.open(url);
     }
 };
 
