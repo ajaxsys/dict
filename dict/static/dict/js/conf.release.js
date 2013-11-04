@@ -1,6 +1,7 @@
-(function($){
 
 // Mark as release mode
-$.DICT_IS_RELEASED = true;
+window.__DICT__ = {
+	'IS_RELEASED' : true
+};
 
-})(jQuery);
+

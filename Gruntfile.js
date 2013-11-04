@@ -28,7 +28,7 @@ module.exports = function(grunt) {
         src: 'Gruntfile.js'
       },
       src: {
-        src: ['resources/static/js/jquery.plaintext.js',
+        src: ['resources/static/js/*.js',
               'dict/static/dict/js/*.js']
       },
       test: {
@@ -74,16 +74,22 @@ module.exports = function(grunt) {
         src: ['dict/static/dict/js/dict.bookmarklet.js'],
         dest: 'release/static/dict/pkg/<%= pkg.name %>_bookmarklet.js'
       },
-      dict_ui: {
+      dict_ui_dev: {
         src: [
           'resources/static/js/jquery.min.js',
           'resources/static/js/jquery.cookie.js',
           'resources/static/js/jquery.plaintext.js',
           'resources/static/js/jwe/jquery.windows-engine.js',
-          'dict/static/dict/js/conf.release.js',
           'dict/static/dict/js/dict.ui.js',
         ],
-        dest: 'release/static/dict/pkg/<%= pkg.name %>_ui.js'
+        dest: 'release/static/dict/pkg/<%= pkg.name %>_ui_dev.js'
+      },
+      dict_ui_rls: {
+        src: [
+          'dict/static/dict/js/conf.release.js',
+          '<%= concat.dict_ui_dev.src %>'
+        ],
+        dest: 'release/static/dict/pkg/<%= pkg.name %>_ui_rls.js'
       },
       dict_proxy: {
         src: [
@@ -108,7 +114,7 @@ module.exports = function(grunt) {
         dest: 'release/static/dict/pkg/<%= pkg.name %>_bookmarklet.min.js'
       },
       dict_ui: {
-        src: ['<%= concat.dict_ui.dest %>'],
+        src: ['<%= concat.dict_ui_rls.dest %>'],
         dest: 'release/static/dict/pkg/<%= pkg.name %>_ui.min.js'
       },
       dict_proxy: {
@@ -157,12 +163,12 @@ module.exports = function(grunt) {
     watch: {
       src: {
         files: '<%= jshint.src.src %>',
-        tasks: ['jshint:src']
+        tasks: ['dist']
       },
-      test: {
-        files: '<%= jshint.test.src %>',
-        tasks: ['jshint:test']
-      }
+      // test: {
+      //   files: '<%= jshint.test.src %>',
+      //   tasks: ['jshint:test']
+      // }
     }
   });
 

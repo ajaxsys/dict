@@ -19,7 +19,6 @@ function loadResourceToGlobalVar(url,varName){
 })();
 
 
-
 // =================== After DOM ready ===================
 $(function(){
     var BML_PREFIX = 'javascript:';
@@ -28,13 +27,18 @@ $(function(){
 
     // Minimized version and released version
     function afterProductVersionLoaded(){
-        var min = BML_PREFIX + __G_BML_MIN__
-            .replace('dict/js/dict.ui.js','dict/pkg/dict_ui.min.js');
-        var prod = min.replace('http://localhost:8000','//python-ok.appspot.com');
+
+        var st = BML_PREFIX + __G_BML_MIN__
+            .replace('dict/pkg/dict_ui_dev.js','dict/pkg/dict_ui_rls.js');
+        var st_min = BML_PREFIX + __G_BML_MIN__
+            .replace('dict/pkg/dict_ui_dev.js','dict/pkg/dict_ui.min.js');
+
+        var prod = st_min.replace('http://localhost:8000','//python-ok.appspot.com');
 
         // Refer to min version.
-        $('#bookmarkletMin').attr('href',min);
-        $('#bookmarkletProduct').attr('href',prod);
+        $('#bookmarkletST').attr('href',st); 
+        $('#bookmarkletSTMin').attr('href',st_min); 
+        $('#bookmarkletReleased').attr('href',prod);
     }
 
     function afterDevelopVersionLoaded(){
@@ -44,8 +48,8 @@ $(function(){
 
         // Enable by default
         updateDevelopLink(toOneLine(__G_BML__));
-        console.log("Default enable dict on this page.");
-        eval(__G_BML__);
+        // console.log("Default enable dict on this page.");
+        // eval(__G_BML__);
     }
 
     // Wait until condition var `==` true

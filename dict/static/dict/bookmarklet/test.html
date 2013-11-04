@@ -10,7 +10,7 @@
 	
 <h2>My dict test page - <a href='/static/dict/no_js.html'>No Script page</a></h2>
 
-<div style='float:left;width:100px'>
+<div style='float:left;width:150px'>
 
 	<select id='select_dict'>
 		<option value='en2jp'>英和</option>
@@ -32,10 +32,14 @@
 
 
 <div style='float:left;width:500px'>
-    Drag this dictionary 
-    <a id='bookmarklet' href="#">Develop</a> or 
-    <a id='bookmarkletMin' href="#">MinVersion</a> or 
-    <a id='bookmarkletProduct' href="#">Product</a> links to bookmark bar.
+    Drag this dictionary :
+    <ul>
+        <li><a id='bookmarklet' href="#">Develop - With local Proxy</a></li>
+        <li><a id='bookmarkletST' href="#">Pre release</a></li> 
+        <li><a id='bookmarkletSTMin' href="#">Pre release(Minimized)</a></li>
+        <li><a id='bookmarkletReleased' href="#">Online Released Ver.</a></li>
+    </ul>
+    links to bookmark bar.
     <p>Debug `Develop` link by edit textarea bellow:</p>
     <textarea id='jsEditor' style='width:100%;height:500px;'></textarea>
 </div>

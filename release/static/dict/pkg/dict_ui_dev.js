@@ -634,20 +634,13 @@ jQuery.extend({
 
 });
 
-(function($){
-
-// Mark as release mode
-$.DICT_IS_RELEASED = true;
-
-})(jQuery);
-
 (function(){
 // TODO
 var options = {};
 var settings = {};
 
-var DICT_RELEASED = $.DICT_IS_RELEASED,
-    DICT_SERVICE = true,
+var DICT_RELEASED = window.__DICT__ ? window.__DICT__.IS_RELEASED : false,
+    DICT_SERVICE = true, // ON/OFF switch
     LB_SERVERS = ['a','b','c','d','e','f','g','h','i','j','k','ll','m','n','o','p','q','r','s','t','u','v','w','x','y','z'];
 
 var DICT_ID = '__dict_window_id__',
@@ -660,49 +653,31 @@ var _thisIP,
 console = window.console || {'log':function(){}};
 console.log('Loading ui resource...');
 
-loadJQuery( window, document,
-  // Minimum jQuery version required. Change this as-needed.
-  '1.10.2',
-  // Your jQuery code goes inside this callback. $ refers to the jQuery object,
-  // and L is a boolean that indicates whether or not an external jQuery file
-  // was just "L"oaded.
-  afterJQueryLoad
-);
+afterJQueryLoad();
 
-function afterJQueryLoad($$, isExternalJQuery) {
-    console.log('existing: ', (window.jQuery?jQuery.fn.jquery:'N/A'),
-                ', loaded: ', (isExternalJQuery?$$.fn.jquery:'N/A'));
-    window.jQuery = window.$ = $$;
-    if (DICT_RELEASED) {
-        console.log('Product mode.');
-        loadResource($, host()+'/static/dict/pkg/dict_ui.min.css', 'css');
-        afterWindowLoad($$);
-        afterPluginLoad($$);
-    } else {
-        console.log('Develop mode.');
-        loadjQueryPlugin($$, afterPluginLoad);
-        loadWindowEngine($$, afterWindowLoad);
-    }
+function afterJQueryLoad() {
 
-    initNavi($$);
+    loadResource($, host()+'/static/dict/pkg/dict_ui.min.css', 'css');
+    afterWindowLoad($);
+    afterPluginLoad($);
+
+    initNavi($);
 
     $( window ).resize(function() {
         resetPositionWhenOverflow($('#'+DICT_ID));
     });
 
+// (function($){
+//     setTimeout(function(){
+//         if ($ && ($ instanceof Function) && ($('<a>') instanceof jQuery)) {
+//             // emove all jQuery variables from the global scope (including jQuery itself).
+//             window.__dict_jquery__ = $.noConflict(true);
+//             console.log("Rescover old jquery, from " + window.__dict_jquery__ + " - "window.__dict_jquery__.fn.jQuery + " to:" + $.fn.jQuery);
+//         }
+//     },5000);
+// })(window.jQuery);
+
 }
-
-(function($){
-    setTimeout(function(){
-        if ($ && ($ instanceof Function) && ($('<a>') instanceof jQuery)) {
-            // emove all jQuery variables from the global scope (including jQuery itself).
-            window.__dict_jquery__ = $.noConflict(true);
-        }
-    },5000);
-})(window.jQuery);
-
-
-
 
 function afterWindowLoad($) {
     //$.newWindow();
@@ -860,55 +835,9 @@ function getSelectionText() {
     return text;
 }
 
-/* // Move to selected word
-function getSelectionPosition(){
-    var dummy,position;
-    if (window.getSelection) {
-        var range = window.getSelection().getRangeAt(0);
-        dummy = document.createElement("span");
-        range.insertNode(dummy);
-    } else if (document.selection && document.selection.type != "Control") {
-        var range = document.selection.createRange().duplicate();
-        range.collapse(false);
-        var tmpId = '__tmp_id_for_selection__';
-        range.pasteHTML('<span id="'+tmpId+'" style="position: relative;"></span>'); 
-        dummy = document.getElementById(tmpId);
-    }
-    position = $(dummy).position();
-    dummy.parentNode.removeChild(dummy);
-    return position;
-}
-
-function getTextWH(txt, $context){
-        var $calc = $('<span style="display: inline-block;" />');
-        $calc.text(txt);
-        $context.append($calc);
-        var wh = {
-            'width' : $calc.width(),
-            'height' : $calc.height()
-        }
-        $calc.remove();
-
-        return wh;
-}
-*/
-function loadjQueryPlugin($,callback) {
-    var jquery_replace_text = host()+'/static/js/jquery.plaintext.js?v=1',
-        jquery_cookie       = host()+'/static/js/jquery.cookie.js?v1';
-    loadResource($, jquery_cookie , 'js');
-    loadResource($, jquery_replace_text, 'js', callback);
-}
-function loadWindowEngine($, callback ) {
-        var window_engine_js  = host()+'/static/js/jwe/jquery.windows-engine.js?v=1',
-            window_engine_css = host()+'/static/js/jwe/jquery.windows-engine.css?v=1';
-
-        loadResource($, window_engine_css, 'css');
-        loadResource($, window_engine_js, 'js', callback);
-}
-
 function initNavi($){
     console.log("Initialize navi.");
-    var $navi = $('<div style="position:fixed;top:0;left:0;z-index:99999;background-color:#EFEFEF;font-weight:bold;"><a href="#">ON</a></div>');
+    var $navi = $('<div style="position:fixed;top:0;left:0;z-index:2147483647;background-color:#EFEFEF;font-weight:bold;"><a href="#">ON</a></div>');
     $('a', $navi).click(function(){
         if ($(this).text()=='ON'){
             $(this).text('OFF');
@@ -958,39 +887,6 @@ function loadResource($, rscURL, rscType, callback, tag, done, readystate){
     appendTag(tag);
 }
 
-function loadJQuery( window, document, req_version, callback, $, script, done, readystate ){
-  
-  // If jQuery isn't loaded, or is a lower version than specified, load the
-  // specified version and call the callback, otherwise just call the callback.
-  if ( !($ = window.jQuery) || version_compare(req_version , $.fn.jquery) > 0 || callback( $ ) ) {
-    
-    // Create a script element.
-    script = document.createElement( 'script' );
-    script.type = 'text/javascript';
-    
-    // Load the specified jQuery from the Google AJAX API server (minified).
-    // script.src = 'http://ajax.googleapis.com/ajax/libs/jquery/' + req_version + '/jquery.min.js';
-    script.src = host() + '/static/js/jquery.min.js';
-
-    
-    // When the script is loaded, remove it, execute jQuery.noConflict( true )
-    // on the newly-loaded jQuery (thus reverting any previous version to its
-    // original state), and call the callback with the newly-loaded jQuery.
-    script.onload = script.onreadystatechange = function() {
-      if ( !done && ( !( readystate = this.readyState )
-        || readystate == 'loaded' || readystate == 'complete' ) ) {
-        
-        callback( ($ = window.jQuery).noConflict(1), done = 1 );
-        
-        $( script ).remove();
-      }
-    };
-    
-    // Add the script element to either the head or body, it doesn't matter.
-    appendTag(script);
-  }
-  
-}
 
 // Append a tag to html , ordered with `head`->`body`
 function appendTag(node) {
@@ -1012,33 +908,6 @@ function get1stTag() {
         }
     }
     return result || document.documentElement.childNodes[0];
-}
-
-function version_compare(v1, v2) {
-    console.log(v1 , " vs " , v2);
-    var v1parts = v1.split('.'),
-        v2parts = v2.split('.');
-
-    for (var i = 0; i < v1parts.length; ++i) {
-        if (v2parts.length == i) {
-            return 1;
-        }
-        if (v1parts[i] == v2parts[i]) {
-            continue;
-        }
-        else if (parseInt(v1parts[i],10) > parseInt(v2parts[i],10)) {
-            return 1;
-        }
-        else {
-            return -1;
-        }
-    }
-
-    if (v1parts.length != v2parts.length) {
-        return -1;
-    }
-
-    return 0;
 }
 
 function host(lbKey){
