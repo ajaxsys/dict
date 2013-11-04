@@ -10,6 +10,19 @@ builtins:
 inbound_services:
 - warmup
 
+skip_files: |
+  ^(.*/)?(
+  (#.*#)|
+  (.*~)|
+  (.*\.py[co])|
+  (.*/RCS/.*)|
+  (\..*)|
+  (.*/\.svn/.*)|
+  (.*/Thumbs\.db)|
+  (.*/\.svn/.*)|
+  (node_modules)|
+  )$
+
 libraries:
 - name: django
   version: latest
@@ -28,6 +41,18 @@ handlers:
 
 - url: /static/admin
   static_dir: django/contrib/admin/static/admin
+  expiration: '0'
+
+- url: /static/dict/pkg
+  static_dir: release/static/dict/pkg
+  expiration: '0'
+
+- url: /static/dict
+  static_dir: dict/static/dict
+  expiration: '0'
+
+- url: /static
+  static_dir: resources/static
   expiration: '0'
 
 - url: /.*
