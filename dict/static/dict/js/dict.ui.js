@@ -1,17 +1,24 @@
 (function($){
 /*jshint -W020 */
 
+window.__DICT__ = window.__DICT__ || {};
+
+// for test
+$.extend(window.__DICT__ ,  {
+    DICT_ID : '__dict_window_id__',
+
+});
 var DICT = window.__DICT__;
+
 
 // TODO
 var options = {};
 var settings = {};
 
-var DICT_RELEASED = DICT ? DICT.IS_RELEASED : false,
-    DICT_SERVICE = true, // ON/OFF switch
+var DICT_RELEASED = DICT.IS_RELEASED,
     LB_SERVERS = ['a','b','c','d','e','f','g','h','i','j','k','ll','m','n','o','p','q','r','s','t','u','v','w','x','y','z'];
 
-var DICT_ID = '__dict_window_id__',
+var DICT_ID = DICT.DICT_ID,
     DICT_JID = '#__dict_window_id__',
     DICT_URL = DICT_RELEASED?'/static/dict/proxy-min.html##key#':'/static/dict/proxy.html##key#',
     DICT_ISFIXED = "position_is_fixed";
@@ -47,7 +54,7 @@ function registSelectWord($) {
         if ($(DICT_JID).find(this).length === 0) {
             // Not element of dict window
         
-            if (!DICT_SERVICE){
+            if (!DICT.DICT_SERVICE){
                 return;
             } else {
                 var text = $.trim(getSelectionText());
@@ -102,7 +109,11 @@ function createNewWindow(title){
         left = $(window).width()-winSize.width,
         top = $(window).height()-winSize.height-41;
 
-    console.log("Win width: ", winSize.width, " height: ", winSize.height);
+    console.log("Win width: ", winSize.width, " height: ", winSize.height, " Top: ", top, " left: ", left);
+    // Fix too large in rkt pages. assume max is 1920*1080
+    if (top > 780) top = 0;
+    if (left > 1620) left = 1620;
+
     // Create
     $.newWindow({
         'id': DICT_ID,
@@ -128,9 +139,9 @@ function resetPositionWhenOverflow($win){
     if (!$win || $win.length<=0){
         return;
     }
-    var MARGIN=50;
-    var W=$win.position().left-MARGIN,
-        H=$win.position().top-MARGIN,
+    var MARGIN=300;
+    var W=$win.position().left+MARGIN,
+        H=$win.position().top+MARGIN,
         MAX_W=$(window).width(),
         MAX_H=$(window).height(),
         isWOver = (W > MAX_W) ,

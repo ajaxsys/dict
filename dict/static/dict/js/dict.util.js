@@ -14,9 +14,9 @@ function getOptionFromCookie(){
     $.cookie.json = true;
     var target = $.cookie(COOKIE_NAME) || {};
     var default_opt={'dict':{'dict_type':'weblios'},'ui':{'width':400,'height':300}};
-    $.extend(target, default_opt);
-    console.log("Cookie read:" + JSON.stringify(target) );
-    return target;
+    $.extend(default_opt, target);// Merge target to options
+    console.log("Cookie read:" + JSON.stringify(default_opt) );
+    return default_opt;
 }
 
 function setOptionToCookie(opt) {

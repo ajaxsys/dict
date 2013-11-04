@@ -7,9 +7,10 @@ $(function(){
 
 // for test
 $.extend(window.__DICT__ ,  {
-    'initNavi' : initNavi
+    'initNavi' : initNavi,
+    'DICT_SERVICE': true, // ON/OFF switch
 });
-
+var DICT = window.__DICT__;
 
 function initNavi(){
     console.log("Initialize navi.");
@@ -17,13 +18,13 @@ function initNavi(){
     $('a', $navi).click(function(){
         if ($(this).text()=='ON'){
             $(this).text('OFF');
-            DICT_SERVICE=false;
+            DICT.DICT_SERVICE=false;
             // For next start up
-            $.closeWindow(DICT_ID);
+            $.closeWindow(DICT.DICT_ID);
         }
         else {
             $(this).text('ON');
-            DICT_SERVICE=true;
+            DICT.DICT_SERVICE=true;
         }
         return false;
     });
