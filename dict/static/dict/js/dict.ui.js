@@ -1,9 +1,13 @@
 (function(){
+/*jshint -W020 */
+
+var DICT = window.__DICT__;
+
 // TODO
 var options = {};
 var settings = {};
 
-var DICT_RELEASED = window.__DICT__ ? window.__DICT__.IS_RELEASED : false,
+var DICT_RELEASED = DICT ? DICT.IS_RELEASED : false,
     DICT_SERVICE = true, // ON/OFF switch
     LB_SERVERS = ['a','b','c','d','e','f','g','h','i','j','k','ll','m','n','o','p','q','r','s','t','u','v','w','x','y','z'];
 
@@ -16,20 +20,14 @@ var _thisIP,
 
 console = window.console || {'log':function(){}};
 console.log('Loading ui resource...');
+loadResource($, host()+'/static/dict/pkg/dict_ui.min.css', 'css');
 
-afterJQueryLoad();
+afterWindowLoad($);
+afterPluginLoad($);
 
-function afterJQueryLoad() {
-
-    loadResource($, host()+'/static/dict/pkg/dict_ui.min.css', 'css');
-    afterWindowLoad($);
-    afterPluginLoad($);
-
-    initNavi($);
-
-    $( window ).resize(function() {
-        resetPositionWhenOverflow($('#'+DICT_ID));
-    });
+$( window ).resize(function() {
+    resetPositionWhenOverflow($('#'+DICT_ID));
+});
 
 // (function($){
 //     setTimeout(function(){
@@ -41,7 +39,6 @@ function afterJQueryLoad() {
 //     },5000);
 // })(window.jQuery);
 
-}
 
 function afterWindowLoad($) {
     //$.newWindow();
@@ -142,22 +139,7 @@ function resetPositionWhenOverflow($win){
     }
 }
 
-////////////////////////// COMMONS ////////////////////
-var COOKIE_NAME='__DICT_OPTIONS__';
-function getOptionFromCookie(){
-    $.cookie.json = true;
-    var target = $.cookie(COOKIE_NAME) || {};
-    var default_opt={'dict':{'dict_type':'weblios'},'ui':{'width':400,'height':300}};
-    $.extend(target, default_opt);
-    console.log("Cookie read:" + JSON.stringify(target) );
-    return target;
-}
 
-function setOptionToCookie(opt) {
-    $.cookie.json = true;
-    $.cookie(COOKIE_NAME, opt , { expires: 365, path: '/' });
-    console.log("Cookie saved:" + JSON.stringify($.cookie(COOKIE_NAME)) );
-}
 
 // Without any symbol
 var WORD_REGEX = /^[^!"#$&'\(\)=~\^\\\|@`\{\}\[\];:,\.\/\?]+$/,
@@ -173,19 +155,15 @@ function isWord(text){
 /////////////////////////////////////////////////////
 
 function setWindowSizeToCookie(){
-    if (!$.cookie)
-        return;
-    $.cookie.json = true;
     var $win = $('#'+DICT_ID);
-    var opt = getOptionFromCookie();
+    var opt = DICT.getOptionFromCookie();
     opt.ui.width = $win.width();
     opt.ui.height = $win.height();
-    setOptionToCookie(opt);
+    DICT.setOptionToCookie(opt);
 }
 
 function getWindowSizeFromCookie(){
-    if (!$.cookie) return;
-    var opt= getOptionFromCookie();
+    var opt= DICT.getOptionFromCookie();
     return opt.ui;
 }
 
@@ -198,26 +176,7 @@ function getSelectionText() {
     }
     return text;
 }
-
-function initNavi($){
-    console.log("Initialize navi.");
-    var $navi = $('<div style="position:fixed;top:0;left:0;z-index:2147483647;background-color:#EFEFEF;font-weight:bold;"><a href="#">ON</a></div>');
-    $('a', $navi).click(function(){
-        if ($(this).text()=='ON'){
-            $(this).text('OFF');
-            DICT_SERVICE=false;
-            // For next start up
-            $.closeWindow(DICT_ID);
-        }
-        else {
-            $(this).text('ON');
-            DICT_SERVICE=true;
-        }
-        return false;
-    });
-    $navi.appendTo('body');
-    
-}
+ 
 
 function loadResource($, rscURL, rscType, callback, tag, done, readystate){
     console.log('Loading:',rscURL);
@@ -248,30 +207,7 @@ function loadResource($, rscURL, rscType, callback, tag, done, readystate){
       }
     };
     
-    appendTag(tag);
-}
-
-
-// Append a tag to html , ordered with `head`->`body`
-function appendTag(node) {
-    var tag = get1stTag('head','body');
-    if (tag){
-        tag.appendChild(node);
-    } else {
-        alert('Not support!')
-    }
-}
-function get1stTag() {
-    var result;
-    for (var i = 0; i < arguments.length; i++) {
-        var tag=arguments[i],
-            tags=document.getElementsByTagName(tag);
-        if (tags.length>0) {
-            result = tags[0];
-            break;
-        }
-    }
-    return result || document.documentElement.childNodes[0];
+    DICT.appendTag(tag);
 }
 
 function host(lbKey){

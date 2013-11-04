@@ -2,7 +2,7 @@
 (function(){
 
 // Develop Version
-loadResourceToGlobalVar('/static/dict/js/dict.bookmarklet.js','__G_BML__');
+loadResourceToGlobalVar('/static/dict/pkg/dict_bookmarklet.js','__G_BML__');
 // Product Version
 loadResourceToGlobalVar('/static/dict/pkg/dict_bookmarklet.min.js','__G_BML_MIN__');
 

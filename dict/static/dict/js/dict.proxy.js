@@ -1,7 +1,8 @@
 ;(function(){
+
+var DICT = window.__DICT__;
+
 // AMD
-$.cookie.json = true;
-var COOKIE_NAME='__DICT_OPTIONS__';
 var $types,$result,$searchBox;
 
 // onload
@@ -12,7 +13,7 @@ $(function(){
     $result = $('#__explain_wrapper__');
     $searchBox = $('#__search__');
 
-    updateOptionMenu(getOptionFromCookie().dict.dict_type);
+    updateOptionMenu(DICT.getOptionFromCookie().dict.dict_type);
     reloadWhenDictOptionChanged();
 
     $(window).on('hashchange', function(e){
@@ -105,7 +106,6 @@ function formatResult(data, type){
 }
 
 function reloadWhenDictOptionChanged(){
-    //$types.change(saveDictVal2Cookies);
     var $opt_lnks = $('a',$types);
     $opt_lnks.click(function(){
         var $this_opt = $(this).parent();
@@ -116,7 +116,7 @@ function reloadWhenDictOptionChanged(){
         // reset menu
         updateOptionMenu(new_dict);
         // Save to cookie
-        saveDictVal2Cookies(new_dict);
+        saveDictValToCookies(new_dict);
         // Reload dict
         doQuery($searchBox.val(), new_dict);
     });
@@ -136,26 +136,13 @@ function updateOptionMenu(val) {
     });
 }
 
-function saveDictVal2Cookies(val){
-    var opt = getOptionFromCookie();
+function saveDictValToCookies(val){
+    var opt = DICT.getOptionFromCookie();
     opt.dict.dict_type = val;
-    setOptionToCookie(opt);
+    DICT.setOptionToCookie(opt);
 }
 
-/////////////////// COMMONS /////////////////////////
-function getOptionFromCookie(){
-    var target = $.cookie(COOKIE_NAME) || {};
-    var default_opt={'dict':{'dict_type':'weblios'},'ui':{'width':400,'height':300}};
-    $.extend(default_opt,target);
-    console.log("Cookie read:" , JSON.stringify(default_opt) );
-    return default_opt;
-}
 
-function setOptionToCookie(opt) {
-    $.cookie.json = true;
-    $.cookie(COOKIE_NAME, opt , { expires: 365, path: '/' });
-    console.log("Cookie saved:" , JSON.stringify($.cookie(COOKIE_NAME)) );
-}
 
 /////////////////// Utils ///////////////////////////
 

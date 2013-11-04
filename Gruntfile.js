@@ -28,8 +28,7 @@ module.exports = function(grunt) {
         src: 'Gruntfile.js'
       },
       src: {
-        src: ['resources/static/js/*.js',
-              'dict/static/dict/js/*.js']
+        src: ['dict/static/dict/js/*.js']
       },
       test: {
         src: ['dict/static/dict/js/tests/*.js']
@@ -71,7 +70,8 @@ module.exports = function(grunt) {
         // stripBanners: false
       },
       dict_bookmarklet: {
-        src: ['dict/static/dict/js/dict.bookmarklet.js'],
+        src: ['dict/static/dict/js/dict.util.sharebml.js',
+              'dict/static/dict/js/dict.bookmarklet.js'],
         dest: 'release/static/dict/pkg/<%= pkg.name %>_bookmarklet.js'
       },
       dict_ui_dev: {
@@ -80,7 +80,10 @@ module.exports = function(grunt) {
           'resources/static/js/jquery.cookie.js',
           'resources/static/js/jquery.plaintext.js',
           'resources/static/js/jwe/jquery.windows-engine.js',
+          'dict/static/dict/js/dict.util.js',
+          'dict/static/dict/js/dict.util.sharebml.js',
           'dict/static/dict/js/dict.ui.js',
+          'dict/static/dict/js/dict.ui.navi.js',
         ],
         dest: 'release/static/dict/pkg/<%= pkg.name %>_ui_dev.js'
       },
@@ -162,8 +165,8 @@ module.exports = function(grunt) {
 
     watch: {
       src: {
-        files: '<%= jshint.src.src %>',
-        tasks: ['dist']
+        files: ['dict/static/dict/js/*.js'],
+        tasks: ['jshint','dist']
       },
       // test: {
       //   files: '<%= jshint.test.src %>',

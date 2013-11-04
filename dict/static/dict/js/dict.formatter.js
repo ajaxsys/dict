@@ -4,6 +4,7 @@
  * dict_from: e.g. local, serverID or internet URL
  */
 ;(function(){
+/*jshint -W020 */
 
 if (typeof DICT == 'undefined') {
 	DICT = {}
