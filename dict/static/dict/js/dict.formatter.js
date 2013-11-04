@@ -3,7 +3,7 @@
  * group    : e.g. en2jp
  * dict_from: e.g. local, serverID or internet URL
  */
-;(function(){
+;(function($){
 /*jshint -W020 */
 
 if (typeof DICT == 'undefined') {
@@ -22,4 +22,4 @@ $.formatDict = function(src, dict_type){
     return dict.format(src);
 }
 
-})();
+})(jQuery);

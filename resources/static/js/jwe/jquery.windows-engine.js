@@ -9,7 +9,17 @@
  * 
  *  Version: 1.7
  */
-jQuery.extend({
+ (function (factory) {
+    if (typeof define === 'function' && define.amd) {
+        // AMD. Register as anonymous module.
+        define(['jquery'], factory);
+    } else {
+        // Browser globals.
+        factory(jQuery);
+    }
+})(function ($) {
+
+$.extend({
 
     newWindow: function(options) {
 
@@ -45,7 +55,7 @@ jQuery.extend({
         var idAttr = "";
         if (options.id != "") idAttr = 'id="' + options.id + '"';
         var $modalBackground = $('<div class="modal-background"></div>');
-        $modalBackground.css("z-index","10000");
+        $modalBackground.css("z-index","2147483601");
         var $windowContainer = $('<div ' + idAttr + ' class="window-container"></div>');
         var $titleBar = $('<div class="window-titleBar"></div>');
         $titleBar.append('<div class="window-titleBar-leftCorner"></div>');
@@ -85,7 +95,7 @@ jQuery.extend({
         var jqWindowsEngineZIndex = 99000;
         var setFocus = function($obj) {
             if(options.modal){
-                $obj.css("z-index", 100000);
+                $obj.css("z-index", 2147483647);
             }
             else{
                 $obj.css("z-index", jqWindowsEngineZIndex++);
@@ -429,3 +439,7 @@ jQuery.extend({
     }
 
 });
+
+
+
+}); // End of AMD Module

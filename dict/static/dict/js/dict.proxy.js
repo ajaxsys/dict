@@ -1,4 +1,4 @@
-;(function(){
+;(function($){
 
 var DICT = window.__DICT__;
 
@@ -174,4 +174,4 @@ function searchToObject() {
 }
 
 // END OF AMD
-})();
+})(jQuery);

@@ -40,7 +40,7 @@ function obj2Text($obj, option) {
     //$obj.on('mouseover', function(e){
     $obj.on(option.on, function(e){
         var $tag2Txt = $(this);
-        console.log("Active Link 2 Text:", $tag2Txt.prop('tagName'));
+        //console.log("Active Link 2 Text:", $tag2Txt.prop('tagName'));
 
         // Already mouse overed
         if ($tag2Txt.data(TIMER)) {
@@ -82,7 +82,7 @@ function obj2Text($obj, option) {
         return false;
     //}).on('mouseout', function(){
     }).on(option.off, function(){
-        console.log("DisActive Link 2 Text:",$(this).prop('tagName'));
+        //console.log("DisActive Link 2 Text:",$(this).prop('tagName'));
         $(this).data(TIMER,null);
     });
 }

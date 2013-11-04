@@ -1,4 +1,4 @@
-(function(){
+(function($){
 
 // for test & hook
 window.__DICT__ = window.__DICT__ || {};
@@ -65,4 +65,4 @@ function loadResource($, rscURL, rscType, callback, tag, done, readystate){
 
 
 
-})();
+})(jQuery);

@@ -1,4 +1,4 @@
-(function(){
+(function($){
 /*jshint -W020 */
 
 var DICT = window.__DICT__;
@@ -12,6 +12,7 @@ var DICT_RELEASED = DICT ? DICT.IS_RELEASED : false,
     LB_SERVERS = ['a','b','c','d','e','f','g','h','i','j','k','ll','m','n','o','p','q','r','s','t','u','v','w','x','y','z'];
 
 var DICT_ID = '__dict_window_id__',
+    DICT_JID = '#__dict_window_id__',
     DICT_URL = DICT_RELEASED?'/static/dict/proxy-min.html##key#':'/static/dict/proxy.html##key#',
     DICT_ISFIXED = "position_is_fixed";
 
@@ -26,7 +27,7 @@ registSelectWord($);
 registLinkToText($);
 
 $( window ).resize(function() {
-    resetPositionWhenOverflow($('#'+DICT_ID));
+    resetPositionWhenOverflow($(DICT_JID));
 });
 
 // (function($){
@@ -39,20 +40,25 @@ $( window ).resize(function() {
 //     },5000);
 // })(window.jQuery);
 
-
 function registSelectWord($) {
     //$.newWindow();
-    $(document).on('mouseup','body *:not(div.window-titleBar)',function(){
-        if (!DICT_SERVICE){
-            return;
-        } else {
-            var text = $.trim(getSelectionText());
-            if (text != _lastSearchWord && isWord(text) ){
-                    _lastSearchWord = text;
-                    createOrUpdateWindow($(this), text);
+    $(document).on('mouseup.dict','body *:not('+DICT_JID+')',function(){
+        console.log('start it');
+        if ($(DICT_JID).find(this).length === 0) {
+            // Not element of dict window
+        
+            if (!DICT_SERVICE){
+                return;
+            } else {
+                var text = $.trim(getSelectionText());
+                if (text != _lastSearchWord && isWord(text) ){
+                        _lastSearchWord = text;
+                        createOrUpdateWindow($(this), text);
+                }
             }
+            return false;
         }
-        return false;
+        // WARN: Do not `return false` here. If so, other mouseup be affected.
     });
 }
 
@@ -68,14 +74,14 @@ function createOrUpdateWindow($obj, text) {
         left = offset.left + textWidthHeight.width,
         top  = offset.top  + textWidthHeight.height;
     */
-    var $dict = $('#'+DICT_ID);
+    var $dict = $(DICT_JID);
     
     if ($dict.length === 0) {
         createNewWindow(text);
         // Fixed this win as default
-        $('#'+DICT_ID).css('position','fixed');
+        $(DICT_JID).css('position','fixed');
         /* If window move to selected word
-         $('#'+DICT_ID).data(DICT_ISFIXED, true);*/
+         $(DICT_JID).data(DICT_ISFIXED, true);*/
     } else {
         /* If window move to selected word
         console.log($dict.data(DICT_ISFIXED));
@@ -108,7 +114,7 @@ function createNewWindow(title){
         'height': winSize.height,
         'onDragEnd': function(){
             // Fix bugs of window flyaway.
-            resetPositionWhenOverflow($('#'+DICT_ID));
+            resetPositionWhenOverflow($(DICT_JID));
         },
         'onResizeEnd': setWindowSizeToCookie,
         'onWindowClose': function(){
@@ -155,7 +161,7 @@ function isWord(text){
 /////////////////////////////////////////////////////
 
 function setWindowSizeToCookie(){
-    var $win = $('#'+DICT_ID);
+    var $win = $(DICT_JID);
     var opt = DICT.getOptionFromCookie();
     opt.ui.width = $win.width();
     opt.ui.height = $win.height();
@@ -237,6 +243,7 @@ function host(lbKey){
     return dev_ip;
 }
 
-window.__dict_loaded__=true;
+//indow.__dict_loaded__=true;
+$.noConflict();
 
-})();
+})(jQuery);

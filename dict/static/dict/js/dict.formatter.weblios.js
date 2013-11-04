@@ -1,4 +1,4 @@
-;(function(){
+;(function($){
 
 /////////// Main Entry. /////////////
 DICT.weblios = 
@@ -71,4 +71,4 @@ function cleanLinks($$) {
 }
 
 
-})();
+})(jQuery);

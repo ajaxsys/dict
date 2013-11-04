@@ -78,9 +78,9 @@ module.exports = function(grunt) {
       dict_ui_dev: {
         src: [
           'resources/static/js/jquery.min.js',
-          'resources/static/js/tooltip/jquery.tipsy.js',
           'resources/static/js/jquery.cookie.js',
           'resources/static/js/jquery.plaintext.js',
+          'resources/static/js/tooltip/jquery.tipsy.js',
           'resources/static/js/jwe/jquery.windows-engine.js',
           'dict/static/dict/js/dict.util.js',
           'dict/static/dict/js/dict.util.sharebml.js',
@@ -101,6 +101,7 @@ module.exports = function(grunt) {
           'resources/static/js/jquery.min.js',
           'resources/static/js/jquery.cookie.js',
           'resources/static/js/bootstrap/js/bootstrap.min.js',
+          'dict/static/dict/js/dict.util.js',
           'dict/static/dict/js/dict.proxy.js',
           'dict/static/dict/js/dict.formatter.js',
           'dict/static/dict/js/dict.formatter.weblio.js',
