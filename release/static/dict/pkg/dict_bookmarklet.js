@@ -2,7 +2,7 @@ void((function(){
     if (!window.__dict_loaded__) {
         var ui=document.createElement('script');
         ui.setAttribute('src',
-            '//python-ok.appspot.com/static/dict/js/dict.ui.js?_'+new Date().getTime());
+            'http://localhost:8000/static/dict/js/dict.ui.js?_'+new Date().getTime());
         appendTag(ui);
     }
     function appendTag(node) {

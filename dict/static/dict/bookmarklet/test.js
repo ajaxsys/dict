@@ -26,10 +26,15 @@ $(function(){
     waitUntil("window.__G_BML__", afterDevelopVersionLoaded);
     waitUntil("window.__G_BML_MIN__", afterProductVersionLoaded);
 
+    // Minimized version and released version
     function afterProductVersionLoaded(){
+        var min = BML_PREFIX + __G_BML_MIN__
+            .replace('dict/js/dict.ui.js','dict/pkg/dict_ui.min.js');
+        var prod = min.replace('http://localhost:8000','//python-ok.appspot.com');
+
         // Refer to min version.
-        $('#bookmarkletMin').attr('href',BML_PREFIX + __G_BML_MIN__
-            .replace('dict/js/dict.ui.js','dict/pkg/dict_ui.min.js'));
+        $('#bookmarkletMin').attr('href',min);
+        $('#bookmarkletProduct').attr('href',prod);
     }
 
     function afterDevelopVersionLoaded(){

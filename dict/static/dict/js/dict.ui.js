@@ -46,7 +46,24 @@ function afterJQueryLoad($$, isExternalJQuery) {
     $( window ).resize(function() {
         resetPositionWhenOverflow($('#'+DICT_ID));
     });
+
+// (function($){
+//     setTimeout(function(){
+//         if ($ && ($ instanceof Function) && ($('<a>') instanceof jQuery)) {
+//             // emove all jQuery variables from the global scope (including jQuery itself).
+//             window.__dict_jquery__ = $.noConflict(true);
+//             console.log("Rescover old jquery, from " + window.__dict_jquery__ + " - "window.__dict_jquery__.fn.jQuery + " to:" + $.fn.jQuery);
+//         }
+//     },5000);
+// })(window.jQuery);
+
+
 }
+
+
+
+
+
 
 function afterWindowLoad($) {
     //$.newWindow();
@@ -446,4 +463,5 @@ function host(lbKey){
 }
 
 window.__dict_loaded__=true;
+
 })();

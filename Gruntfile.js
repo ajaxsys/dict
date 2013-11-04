@@ -17,18 +17,18 @@ module.exports = function(grunt) {
 
     // Task configuration.
     clean: {
-      dist: ['dict/static/dict/pkg/']
+      dist: ['release/static/dict/pkg/']
     },
 
     jshint: {
       options: {
-        jshintrc: 'static/js/.jshintrc'
+        jshintrc: 'resources/static/js/.jshintrc'
       },
       gruntfile: {
         src: 'Gruntfile.js'
       },
       src: {
-        src: ['static/js/jquery.plaintext.js',
+        src: ['resources/static/js/jquery.plaintext.js',
               'dict/static/dict/js/*.js']
       },
       test: {
@@ -54,11 +54,11 @@ module.exports = function(grunt) {
     cssmin: {
       compress: {
         files: {
-          'dict/static/dict/pkg/dict_ui.min.css':[
-              'static/js/jwe/jquery.windows-engine.css',
+          'release/static/dict/pkg/dict_ui.min.css':[
+              'resources/static/js/jwe/jquery.windows-engine.css',
           ],
-          'dict/static/dict/pkg/dict_proxy.min.css':[
-              'static/js/bootstrap/css/bootstrap.css',
+          'release/static/dict/pkg/dict_proxy.min.css':[
+              'resources/static/js/bootstrap/css/bootstrap.css',
               'dict/static/dict/css/dict.common.css'
           ],
         },
@@ -72,30 +72,30 @@ module.exports = function(grunt) {
       },
       dict_bookmarklet: {
         src: ['dict/static/dict/js/dict.bookmarklet.js'],
-        dest: 'dict/static/dict/pkg/<%= pkg.name %>_bookmarklet.js'
+        dest: 'release/static/dict/pkg/<%= pkg.name %>_bookmarklet.js'
       },
       dict_ui: {
         src: [
-          'static/js/jquery.min.js',
-          'static/js/jquery.cookie.js',
-          'static/js/jquery.plaintext.js',
-          'static/js/jwe/jquery.windows-engine.js',
+          'resources/static/js/jquery.min.js',
+          'resources/static/js/jquery.cookie.js',
+          'resources/static/js/jquery.plaintext.js',
+          'resources/static/js/jwe/jquery.windows-engine.js',
           'dict/static/dict/js/conf.release.js',
           'dict/static/dict/js/dict.ui.js',
         ],
-        dest: 'dict/static/dict/pkg/<%= pkg.name %>_ui.js'
+        dest: 'release/static/dict/pkg/<%= pkg.name %>_ui.js'
       },
       dict_proxy: {
         src: [
-          'static/js/jquery.min.js',
-          'static/js/jquery.cookie.js',
-          'static/js/bootstrap/js/bootstrap.min.js',
+          'resources/static/js/jquery.min.js',
+          'resources/static/js/jquery.cookie.js',
+          'resources/static/js/bootstrap/js/bootstrap.min.js',
           'dict/static/dict/js/dict.proxy.js',
           'dict/static/dict/js/dict.formatter.js',
           'dict/static/dict/js/dict.formatter.weblio.js',
           'dict/static/dict/js/dict.formatter.weblios.js',
         ],
-        dest: 'dict/static/dict/pkg/<%= pkg.name %>_proxy.js'
+        dest: 'release/static/dict/pkg/<%= pkg.name %>_proxy.js'
       },
     },
 
@@ -105,15 +105,15 @@ module.exports = function(grunt) {
       },
       dict_bookmarklet: {
         src: ['<%= concat.dict_bookmarklet.dest %>'],
-        dest: 'dict/static/dict/pkg/<%= pkg.name %>_bookmarklet.min.js'
+        dest: 'release/static/dict/pkg/<%= pkg.name %>_bookmarklet.min.js'
       },
       dict_ui: {
         src: ['<%= concat.dict_ui.dest %>'],
-        dest: 'dict/static/dict/pkg/<%= pkg.name %>_ui.min.js'
+        dest: 'release/static/dict/pkg/<%= pkg.name %>_ui.min.js'
       },
       dict_proxy: {
         src: ['<%= concat.dict_proxy.dest %>'],
-        dest: 'dict/static/dict/pkg/<%= pkg.name %>_proxy.min.js'
+        dest: 'release/static/dict/pkg/<%= pkg.name %>_proxy.min.js'
       },
     },
 
@@ -137,10 +137,10 @@ module.exports = function(grunt) {
     copy: {
       main: {
         files: [
-          //{src: ['static/js/jwe/default/*'], dest: 'static/js/pkg/default/', filter: 'isFile'}, // includes files in path
+          //{src: ['resources/static/js/jwe/default/*'], dest: 'resources/static/js/pkg/default/', filter: 'isFile'}, // includes files in path
           //{src: ['path/**'], dest: 'dest/'}, // includes files in path and its subdirs
           //{expand: true, cwd: 'path/', src: ['**'], dest: 'dest/'}, // makes all src relative to cwd
-          {expand:true, cwd: 'static/js/jwe/default/',src: ['*'], dest: 'dict/static/dict/pkg/default/', filter: 'isFile'}, 
+          {expand:true, cwd: 'resources/static/js/jwe/default/',src: ['*'], dest: 'release/static/dict/pkg/default/', filter: 'isFile'}, 
           //{expand: true, flatten: true, src: ['path/**'], dest: 'dest/', filter: 'isFile'} // flattens results to a single level
         ]
       }
