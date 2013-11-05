@@ -101,7 +101,7 @@ function createOrUpdateWindow($obj, text) {
     var frameURL = host(text) + DICT_URL;
     // Update iframe, need encodeURI for cross encoding of page.
     $.updateWindowContent(DICT_ID, '<iframe src="'+frameURL.replace('#key#',encodeURIComponent(text))+
-                '" style="overflow-x: hidden;width: 100%;height:100%;border:0px;" />');
+                '" style="overflow-x: hidden;width: 100%;height:100%;border:0px;"></iframe>');
 }
 
 function createNewWindow(title){

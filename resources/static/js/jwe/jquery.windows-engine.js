@@ -18,7 +18,7 @@
         factory(jQuery);
     }
 })(function ($) {
-
+var jQuery = $;
 $.extend({
 
     newWindow: function(options) {
@@ -391,7 +391,7 @@ $.extend({
         } else {
             // Fix iframe refresh
             if ($('iframe',$content).length > 0 &&
-                $(newContent).prop("tagName") == 'iframe') {
+                $(newContent).prop("tagName").toUpperCase() === 'iframe'.toUpperCase()) {
                 $('iframe:first',$content).attr('src', $(newContent).attr('src'));
             } else {
                 $("#" + id + " .window-content").html(newContent);
