@@ -159,7 +159,7 @@ function resetPositionWhenOverflow($win){
 
 
 // Without any symbol
-var WORD_REGEX = /^[^!"#$&'\(\)=~\^\\\|@`\{\}\[\];:,\.\/\?]+$/,
+var WORD_REGEX = /^[^!"#$&'\(\)=~\^\\\|@`\{\}\[\];:,\.\/\?、。「」”（）！]+$/,
     WORD_MAX_LENGTH = 50;
 function isWord(text){
     // Selected words in one line, 
