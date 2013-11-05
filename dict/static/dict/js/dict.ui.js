@@ -254,7 +254,4 @@ function host(lbKey){
     return dev_ip;
 }
 
-window.__DICT__.loaded=true;
-$.noConflict(true);
-
 })(jQuery);

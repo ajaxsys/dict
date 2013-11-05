@@ -847,10 +847,17 @@ $.extend({
     },
 
     updateWindowContent: function(id, newContent) {
-	if (newContent instanceof jQuery) {
-	    $("#" + id + " .window-content").empty().append(newContent);
+        var $content = $("#" + id + " .window-content");
+    	if (newContent instanceof jQuery) {
+    	    $content.empty().append(newContent);
         } else {
-            $("#" + id + " .window-content").html(newContent);
+            // Fix iframe refresh
+            if ($('iframe',$content).length > 0 &&
+                $(newContent).prop("tagName") == 'iframe') {
+                $('iframe:first',$content).attr('src', $(newContent).attr('src'));
+            } else {
+                $("#" + id + " .window-content").html(newContent);
+            }
         }
     },
 
@@ -919,6 +926,11 @@ $.extend({
 
 
 }); // End of AMD Module
+
+
+// Config here
+
+
 
 (function($){
 
@@ -1275,9 +1287,6 @@ function host(lbKey){
     return dev_ip;
 }
 
-window.__DICT__.loaded=true;
-$.noConflict(true);
-
 })(jQuery);
 
 (function($){
@@ -1314,6 +1323,15 @@ function initNavi(){
     
 }
 
+
+
+})(jQuery);
+
+(function($){
+
+
+window.__DICT__.loaded=true;
+$.noConflict(true);
 
 
 })(jQuery);

@@ -82,10 +82,12 @@ module.exports = function(grunt) {
           'resources/static/js/jquery.plaintext.js',
           'resources/static/js/tooltip/jquery.tipsy.js',
           'resources/static/js/jwe/jquery.windows-engine.js',
+          'dict/static/dict/js/conf.js',
           'dict/static/dict/js/dict.util.js',
           'dict/static/dict/js/dict.util.sharebml.js',
           'dict/static/dict/js/dict.ui.js',
           'dict/static/dict/js/dict.ui.navi.js',
+          'dict/static/dict/js/end.js',
         ],
         dest: 'release/static/dict/pkg/<%= pkg.name %>_ui_dev.js'
       },
