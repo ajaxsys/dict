@@ -1180,8 +1180,8 @@ function resetPositionWhenOverflow($win){
 
 
 // Without any symbol
-var WORD_REGEX = /^[^!"#$&'\(\)=~\^\\\|@`\{\}\[\];:,\.\/\?、。「」”（）！]+$/,
-    WORD_MAX_LENGTH = 50;
+var WORD_REGEX = /^[^!"#$&'\(\)=~\^\\\|@`\{\}\[\];:,\.\/\?、。「」（）！]+$/,
+    WORD_MAX_LENGTH = 50;  
 function isWord(text){
     // Selected words in one line, 
     return text !== '' && text.indexOf('\n')===-1 
@@ -1276,7 +1276,7 @@ function host(lbKey){
 }
 
 window.__DICT__.loaded=true;
-$.noConflict();
+$.noConflict(true);
 
 })(jQuery);
 
