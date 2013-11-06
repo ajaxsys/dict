@@ -125,12 +125,12 @@ u[o]&&(delete u[o],c?delete n[l]:typeof n.removeAttribute!==i?n.removeAttribute(
     }
 })(function ($) {
 
-$.fn.plaintext = function(option) {
+$.plaintext = function(selector, option) {
     option = option || {};
     // Usage: options defined here
     var defaultOption = {
-        'on' : 'mouseenter',
-        'off': 'mouseleave',
+        'on' : 'mouseenter.plaintext',
+        'off': 'mouseleave.plaintext',
         'delayIn' : 2000,
         'delayOut' : 3000,
         'color' : '#EF0FFF',
@@ -139,16 +139,16 @@ $.fn.plaintext = function(option) {
     // Merge to default option
     $.extend(defaultOption, option);
     // main
-    obj2Text($(this),defaultOption);
+    obj2Text(selector, defaultOption);
 }
 
 
 var TIMER = "__link_timmer__";
 
-function obj2Text($obj, option) {
+function obj2Text(selector, option) {
     // Link to Text
     //$obj.on('mouseover', function(e){
-    $obj.on(option.on, function(e){
+    $(document).on(option.on, selector, function(e){
         var $tag2Txt = $(this);
         //console.log("Active Link 2 Text:", $tag2Txt.prop('tagName'));
 
@@ -191,7 +191,7 @@ function obj2Text($obj, option) {
         e.stopPropagation();
         return false;
     //}).on('mouseout', function(){
-    }).on(option.off, function(){
+    }).on(option.off, selector, function(){
         //console.log("DisActive Link 2 Text:",$(this).prop('tagName'));
         $(this).data(TIMER,null);
     });
@@ -563,8 +563,8 @@ $.extend({
         //     }
         // });
 
-        // var jqWindowsEngineZIndex = $('body *').getMaxZ(), // Max z-index on page
-        //     MAX_Z_INDEX = 2147483647;
+        var jqWindowsEngineZIndex = 1, //$('body *').getMaxZ(), // Max z-index on page
+            MAX_Z_INDEX = 2147483647;
 
         // var setFocus = function($obj) {
         //     if(options.modal){
@@ -575,7 +575,7 @@ $.extend({
         //     }
         // }
         var setFocus = function($obj) {
-            $obj.css("z-index", 2147483647);
+            $obj.css("z-index", MAX_Z_INDEX);
         }
 
         var resize = function($obj, width, height) {
@@ -593,7 +593,7 @@ $.extend({
                 $obj.find("iframe").each(function(){
                     $("#jquery-window-engine-iframe-cover").css({top:$(this).offset().top, left:$(this).offset().left,
                     width:this.offsetWidth,height:this.offsetHeight,
-                    position: "absolute", opacity: "0.0001", zIndex: 10000,
+                    position: "absolute", opacity: "0.0001", zIndex: MAX_Z_INDEX,
                     background:"#444"});
                 });
             }
@@ -611,7 +611,7 @@ $.extend({
                 $obj.find("iframe").each(function(){
                     $("#jquery-window-engine-iframe-cover").css({top:$(this).offset().top, left:$(this).offset().left,
                     width:this.offsetWidth,height:this.offsetHeight,
-                    position: "absolute", opacity: "0.0001", zIndex: 10000,
+                    position: "absolute", opacity: "0.0001", zIndex: MAX_Z_INDEX,
                     background:"#444"});
                 });
             }
@@ -656,7 +656,7 @@ $.extend({
                     $obj.find("iframe").each(function(){
                         $tmpDiv.css({top:$(this).offset().top, left:$(this).offset().left,
                         width:this.offsetWidth,height:this.offsetHeight,
-                        position: "absolute", opacity: "0.0001", zIndex: 10000,
+                        position: "absolute", opacity: "0.0001", zIndex: MAX_Z_INDEX,
                         background:"#444"});
                         $('body').append($tmpDiv);
                     });
@@ -705,7 +705,7 @@ $.extend({
                     $obj.find("iframe").each(function(){
                         $tmpDiv.css({top:$(this).offset().top, left:$(this).offset().left,
                         width:this.offsetWidth,height:this.offsetHeight,
-                        position: "absolute", opacity: "0.0001", zIndex: 10000,
+                        position: "absolute", opacity: "0.0001", zIndex: MAX_Z_INDEX,
                         background:"#444"});
                         $('body').append($tmpDiv);
                     });
@@ -848,16 +848,18 @@ $.extend({
 
     updateWindowContent: function(id, newContent) {
         var $content = $("#" + id + " .window-content");
+
+        // Fix iframe refresh/ load faster
+        if ($('iframe',$content).length > 0 &&
+            $(newContent).prop("tagName").toUpperCase() === 'iframe'.toUpperCase()) {
+            $('iframe:first',$content).attr('src', $(newContent).attr('src'));
+            return;
+        }
+
     	if (newContent instanceof jQuery) {
     	    $content.empty().append(newContent);
         } else {
-            // Fix iframe refresh
-            if ($('iframe',$content).length > 0 &&
-                $(newContent).prop("tagName").toUpperCase() === 'iframe'.toUpperCase()) {
-                $('iframe:first',$content).attr('src', $(newContent).attr('src'));
-            } else {
-                $("#" + id + " .window-content").html(newContent);
-            }
+            $("#" + id + " .window-content").html(newContent);
         }
     },
 
@@ -1066,23 +1068,15 @@ DICT.loadResource($, host()+'/static/dict/pkg/dict_ui.min.css', 'css');
 registSelectWord($);
 registLinkToText($);
 
+createOrUpdateWindow('body','');
+
 $( window ).resize(function() {
     resetPositionWhenOverflow($(DICT_JID));
 });
 
-// (function($){
-//     setTimeout(function(){
-//         if ($ && ($ instanceof Function) && ($('<a>') instanceof jQuery)) {
-//             // emove all jQuery variables from the global scope (including jQuery itself).
-//             window.__dict_jquery__ = $.noConflict(true);
-//             console.log("Rescover old jquery, from " + window.__dict_jquery__ + " - " + window.__dict_jquery__.fn.jQuery + " to:" + $.fn.jQuery);
-//         }
-//     },5000);
-// })(window.jQuery);
-
 function registSelectWord($) {
-    //$.newWindow();
-    $(document).on('mouseup.dict','body *:not('+DICT_JID+')',function(){
+    console.log($('body *:not('+DICT_JID+', '+DICT_JID+' *)'));
+    $(document).on('mouseup.dict','body *:not('+DICT_JID+', '+DICT_JID+' *)',function(){
         console.log('start it');
         if ($(DICT_JID).find(this).length === 0) {
             // Not element of dict window
@@ -1103,7 +1097,7 @@ function registSelectWord($) {
 }
 
 function registLinkToText($) {
-    $('body a, body img, body select').plaintext();
+    //$.plaintext('body a, body img, body select');
 }
 
 function createOrUpdateWindow($obj, text) {
@@ -1119,7 +1113,8 @@ function createOrUpdateWindow($obj, text) {
     if ($dict.length === 0) {
         createNewWindow(text);
         // Fixed this win as default
-        $(DICT_JID).css('position','fixed');
+        $dict = $(DICT_JID);
+        $dict.css('position','fixed');
         /* If window move to selected word
          $(DICT_JID).data(DICT_ISFIXED, true);*/
     } else {
@@ -1135,17 +1130,38 @@ function createOrUpdateWindow($obj, text) {
     // Update iframe, need encodeURI for cross encoding of page.
     $.updateWindowContent(DICT_ID, '<iframe src="'+frameURL.replace('#key#',encodeURIComponent(text))+
                 '" style="overflow-x: hidden;width: 100%;height:100%;border:0px;"></iframe>');
+    if (!text) {
+        $dict.hide(); // For preload
+    } else {
+        $dict.show();
+    }
+}
+
+// quirks mode support. DO NOT use $(window).height()/width()
+function getBrowserSize(){
+    var w = 0;var h = 0;
+    //IE
+    if(!window.innerWidth){
+        if(document.documentElement.clientWidth !== 0){
+            //strict mode
+            w = document.documentElement.clientWidth;h = document.documentElement.clientHeight;
+        } else{
+            //quirks mode
+            w = document.body.clientWidth;h = document.body.clientHeight;
+        }
+    } else {
+        //w3c
+        w = window.innerWidth;h = window.innerHeight;
+    }
+    return {width:w,height:h};
 }
 
 function createNewWindow(title){
     var winSize = getWindowSizeFromCookie(),
-        left = $(window).width()-winSize.width,
-        top = $(window).height()-winSize.height-41;
+        left = getBrowserSize().width-winSize.width,
+        top = getBrowserSize().height-winSize.height-41;
 
     console.log("Win width: ", winSize.width, " height: ", winSize.height, " Top: ", top, " left: ", left);
-    // Fix too large in rkt pages. assume max is 1920*1080
-    if (top > 780) top = 0;
-    if (left > 1620) left = 1620;
 
     // Create
     $.newWindow({
@@ -1192,8 +1208,8 @@ function resetPositionWhenOverflow($win){
 
 
 // Without any symbol
-//var WORD_REGEX = /^[^!"#$&'\(\)=~\^\\\|@`\{\}\[\];:,\.\/\?、。「」（）！]+$/, // NG in shift-JIS page
-var WORD_REGEX = /^[^!"#$&'\(\)=~\^\\\|@`\{\}\[\];:,\.\/\?]+$/,
+// 。、，（）「」￥！ // NG in shift-JIS page
+var WORD_REGEX = /^[^!"#$&'\(\)=~\^\\\|@`\{\}\[\];:,\.\/\?\u3002\u3001\uFF0C\uFF08\uFF09\u300C\u300D\uFFE5\uFF01]+$/,
     WORD_MAX_LENGTH = 50;  
 function isWord(text){
     // Selected words in one line, 
@@ -1306,7 +1322,9 @@ var DICT = window.__DICT__;
 
 function initNavi(){
     console.log("Initialize navi.");
-    var $navi = $('<div style="position:fixed;top:0;left:0;z-index:2147483647;background-color:#EFEFEF;font-weight:bold;"><a href="#">ON</a></div>');
+    var $navi = $('<div style="position:fixed;top:0;left:0;z-index:2147483647;font-weight:bold;font-size:18px;">' +
+                    '<a href="#" style="text-shadow: 0 0 2px #999;color:blue;font-family:Times, serif">ON</a>' + 
+                '</div>');
     $('a', $navi).click(function(){
         if ($(this).text()=='ON'){
             $(this).text('OFF');
@@ -1332,7 +1350,7 @@ function initNavi(){
 
 
 window.__DICT__.loaded=true;
-$.noConflict(true);
+window.__DICT__.$=$.noConflict(true);
 
 
 })(jQuery);

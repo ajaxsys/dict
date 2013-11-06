@@ -101,8 +101,8 @@ $.extend({
         //     }
         // });
 
-        // var jqWindowsEngineZIndex = $('body *').getMaxZ(), // Max z-index on page
-        //     MAX_Z_INDEX = 2147483647;
+        var jqWindowsEngineZIndex = 1, //$('body *').getMaxZ(), // Max z-index on page
+            MAX_Z_INDEX = 2147483647;
 
         // var setFocus = function($obj) {
         //     if(options.modal){
@@ -113,7 +113,7 @@ $.extend({
         //     }
         // }
         var setFocus = function($obj) {
-            $obj.css("z-index", 2147483647);
+            $obj.css("z-index", MAX_Z_INDEX);
         }
 
         var resize = function($obj, width, height) {
@@ -131,7 +131,7 @@ $.extend({
                 $obj.find("iframe").each(function(){
                     $("#jquery-window-engine-iframe-cover").css({top:$(this).offset().top, left:$(this).offset().left,
                     width:this.offsetWidth,height:this.offsetHeight,
-                    position: "absolute", opacity: "0.0001", zIndex: 10000,
+                    position: "absolute", opacity: "0.0001", zIndex: MAX_Z_INDEX,
                     background:"#444"});
                 });
             }
@@ -149,7 +149,7 @@ $.extend({
                 $obj.find("iframe").each(function(){
                     $("#jquery-window-engine-iframe-cover").css({top:$(this).offset().top, left:$(this).offset().left,
                     width:this.offsetWidth,height:this.offsetHeight,
-                    position: "absolute", opacity: "0.0001", zIndex: 10000,
+                    position: "absolute", opacity: "0.0001", zIndex: MAX_Z_INDEX,
                     background:"#444"});
                 });
             }
@@ -194,7 +194,7 @@ $.extend({
                     $obj.find("iframe").each(function(){
                         $tmpDiv.css({top:$(this).offset().top, left:$(this).offset().left,
                         width:this.offsetWidth,height:this.offsetHeight,
-                        position: "absolute", opacity: "0.0001", zIndex: 10000,
+                        position: "absolute", opacity: "0.0001", zIndex: MAX_Z_INDEX,
                         background:"#444"});
                         $('body').append($tmpDiv);
                     });
@@ -243,7 +243,7 @@ $.extend({
                     $obj.find("iframe").each(function(){
                         $tmpDiv.css({top:$(this).offset().top, left:$(this).offset().left,
                         width:this.offsetWidth,height:this.offsetHeight,
-                        position: "absolute", opacity: "0.0001", zIndex: 10000,
+                        position: "absolute", opacity: "0.0001", zIndex: MAX_Z_INDEX,
                         background:"#444"});
                         $('body').append($tmpDiv);
                     });
@@ -386,16 +386,18 @@ $.extend({
 
     updateWindowContent: function(id, newContent) {
         var $content = $("#" + id + " .window-content");
+
+        // Fix iframe refresh/ load faster
+        if ($('iframe',$content).length > 0 &&
+            $(newContent).prop("tagName").toUpperCase() === 'iframe'.toUpperCase()) {
+            $('iframe:first',$content).attr('src', $(newContent).attr('src'));
+            return;
+        }
+
     	if (newContent instanceof jQuery) {
     	    $content.empty().append(newContent);
         } else {
-            // Fix iframe refresh
-            if ($('iframe',$content).length > 0 &&
-                $(newContent).prop("tagName").toUpperCase() === 'iframe'.toUpperCase()) {
-                $('iframe:first',$content).attr('src', $(newContent).attr('src'));
-            } else {
-                $("#" + id + " .window-content").html(newContent);
-            }
+            $("#" + id + " .window-content").html(newContent);
         }
     },
 

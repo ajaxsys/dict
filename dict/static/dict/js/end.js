@@ -2,7 +2,7 @@
 
 
 window.__DICT__.loaded=true;
-$.noConflict(true);
+window.__DICT__.$=$.noConflict(true);
 
 
 })(jQuery);

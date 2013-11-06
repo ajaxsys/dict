@@ -19,6 +19,9 @@
 	top:200;
 	font-size:13px;
 	font-family:verdana;
+	box-shadow:-2px -2px 30px 5px #C9C9C9;
+	-webkit-box-shadow:-2px -2px 30px 5px #C9C9C9;
+	-moz-box-shadow:-2px -2px 30px 5px #C9C9C9;
 }
 
 .window-titleBar
@@ -39,7 +42,7 @@
 
 .window-titleBar-leftCorner
 {
-	background: transparent url(default/top_left.gif) no-repeat;			
+	background: #E4E4E4 url(default/top_left.gif) no-repeat;			
     width:9px;
     height:23px;
     position: absolute;
@@ -49,7 +52,7 @@
 
 .window-titleBar-rightCorner
 {
-	background: transparent url(default/top_right.gif) no-repeat;			
+	background: #E4E4E4 url(default/top_right.gif) no-repeat;			
     width:9px;
     height:23px;
     position: absolute;

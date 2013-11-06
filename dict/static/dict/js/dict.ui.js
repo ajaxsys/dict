@@ -33,23 +33,15 @@ DICT.loadResource($, host()+'/static/dict/pkg/dict_ui.min.css', 'css');
 registSelectWord($);
 registLinkToText($);
 
+createOrUpdateWindow('body','');
+
 $( window ).resize(function() {
     resetPositionWhenOverflow($(DICT_JID));
 });
 
-// (function($){
-//     setTimeout(function(){
-//         if ($ && ($ instanceof Function) && ($('<a>') instanceof jQuery)) {
-//             // emove all jQuery variables from the global scope (including jQuery itself).
-//             window.__dict_jquery__ = $.noConflict(true);
-//             console.log("Rescover old jquery, from " + window.__dict_jquery__ + " - " + window.__dict_jquery__.fn.jQuery + " to:" + $.fn.jQuery);
-//         }
-//     },5000);
-// })(window.jQuery);
-
 function registSelectWord($) {
-    //$.newWindow();
-    $(document).on('mouseup.dict','body *:not('+DICT_JID+')',function(){
+    console.log($('body *:not('+DICT_JID+', '+DICT_JID+' *)'));
+    $(document).on('mouseup.dict','body *:not('+DICT_JID+', '+DICT_JID+' *)',function(){
         console.log('start it');
         if ($(DICT_JID).find(this).length === 0) {
             // Not element of dict window
@@ -70,7 +62,7 @@ function registSelectWord($) {
 }
 
 function registLinkToText($) {
-    $('body a, body img, body select').plaintext();
+    //$.plaintext('body a, body img, body select');
 }
 
 function createOrUpdateWindow($obj, text) {
@@ -86,7 +78,8 @@ function createOrUpdateWindow($obj, text) {
     if ($dict.length === 0) {
         createNewWindow(text);
         // Fixed this win as default
-        $(DICT_JID).css('position','fixed');
+        $dict = $(DICT_JID);
+        $dict.css('position','fixed');
         /* If window move to selected word
          $(DICT_JID).data(DICT_ISFIXED, true);*/
     } else {
@@ -102,17 +95,38 @@ function createOrUpdateWindow($obj, text) {
     // Update iframe, need encodeURI for cross encoding of page.
     $.updateWindowContent(DICT_ID, '<iframe src="'+frameURL.replace('#key#',encodeURIComponent(text))+
                 '" style="overflow-x: hidden;width: 100%;height:100%;border:0px;"></iframe>');
+    if (!text) {
+        $dict.hide(); // For preload
+    } else {
+        $dict.show();
+    }
+}
+
+// quirks mode support. DO NOT use $(window).height()/width()
+function getBrowserSize(){
+    var w = 0;var h = 0;
+    //IE
+    if(!window.innerWidth){
+        if(document.documentElement.clientWidth !== 0){
+            //strict mode
+            w = document.documentElement.clientWidth;h = document.documentElement.clientHeight;
+        } else{
+            //quirks mode
+            w = document.body.clientWidth;h = document.body.clientHeight;
+        }
+    } else {
+        //w3c
+        w = window.innerWidth;h = window.innerHeight;
+    }
+    return {width:w,height:h};
 }
 
 function createNewWindow(title){
     var winSize = getWindowSizeFromCookie(),
-        left = $(window).width()-winSize.width,
-        top = $(window).height()-winSize.height-41;
+        left = getBrowserSize().width-winSize.width,
+        top = getBrowserSize().height-winSize.height-41;
 
     console.log("Win width: ", winSize.width, " height: ", winSize.height, " Top: ", top, " left: ", left);
-    // Fix too large in rkt pages. assume max is 1920*1080
-    if (top > 780) top = 0;
-    if (left > 1620) left = 1620;
 
     // Create
     $.newWindow({
@@ -159,8 +173,8 @@ function resetPositionWhenOverflow($win){
 
 
 // Without any symbol
-//var WORD_REGEX = /^[^!"#$&'\(\)=~\^\\\|@`\{\}\[\];:,\.\/\?、。「」（）！]+$/, // NG in shift-JIS page
-var WORD_REGEX = /^[^!"#$&'\(\)=~\^\\\|@`\{\}\[\];:,\.\/\?]+$/,
+// 。、，（）「」￥！ // NG in shift-JIS page
+var WORD_REGEX = /^[^!"#$&'\(\)=~\^\\\|@`\{\}\[\];:,\.\/\?\u3002\u3001\uFF0C\uFF08\uFF09\u300C\u300D\uFFE5\uFF01]+$/,
     WORD_MAX_LENGTH = 50;  
 function isWord(text){
     // Selected words in one line, 

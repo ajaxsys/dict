@@ -15,12 +15,12 @@
     }
 })(function ($) {
 
-$.fn.plaintext = function(option) {
+$.plaintext = function(selector, option) {
     option = option || {};
     // Usage: options defined here
     var defaultOption = {
-        'on' : 'mouseenter',
-        'off': 'mouseleave',
+        'on' : 'mouseenter.plaintext',
+        'off': 'mouseleave.plaintext',
         'delayIn' : 2000,
         'delayOut' : 3000,
         'color' : '#EF0FFF',
@@ -29,16 +29,16 @@ $.fn.plaintext = function(option) {
     // Merge to default option
     $.extend(defaultOption, option);
     // main
-    obj2Text($(this),defaultOption);
+    obj2Text(selector, defaultOption);
 }
 
 
 var TIMER = "__link_timmer__";
 
-function obj2Text($obj, option) {
+function obj2Text(selector, option) {
     // Link to Text
     //$obj.on('mouseover', function(e){
-    $obj.on(option.on, function(e){
+    $(document).on(option.on, selector, function(e){
         var $tag2Txt = $(this);
         //console.log("Active Link 2 Text:", $tag2Txt.prop('tagName'));
 
@@ -81,7 +81,7 @@ function obj2Text($obj, option) {
         e.stopPropagation();
         return false;
     //}).on('mouseout', function(){
-    }).on(option.off, function(){
+    }).on(option.off, selector, function(){
         //console.log("DisActive Link 2 Text:",$(this).prop('tagName'));
         $(this).data(TIMER,null);
     });

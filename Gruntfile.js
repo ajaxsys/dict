@@ -171,7 +171,7 @@ module.exports = function(grunt) {
     watch: {
       src: {
         files: ['dict/static/dict/js/*.js',
-                'resources/static/js/jquery.plaintext.js',
+                'resources/static/js/**/*',
         ],
         tasks: ['jshint','dist']
       },

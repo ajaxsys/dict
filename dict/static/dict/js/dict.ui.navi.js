@@ -14,7 +14,9 @@ var DICT = window.__DICT__;
 
 function initNavi(){
     console.log("Initialize navi.");
-    var $navi = $('<div style="position:fixed;top:0;left:0;z-index:2147483647;background-color:#EFEFEF;font-weight:bold;"><a href="#">ON</a></div>');
+    var $navi = $('<div style="position:fixed;top:0;left:0;z-index:2147483647;font-weight:bold;font-size:18px;">' +
+                    '<a href="#" style="text-shadow: 0 0 2px #999;color:blue;font-family:Times, serif">ON</a>' + 
+                '</div>');
     $('a', $navi).click(function(){
         if ($(this).text()=='ON'){
             $(this).text('OFF');
