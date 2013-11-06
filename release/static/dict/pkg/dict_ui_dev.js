@@ -1091,7 +1091,7 @@ function registSelectWord($) {
 }
 
 function registLinkToText($) {
-    //$.plaintext('body a, body img, body select');
+    $.plaintext('body a, body img, body select');
 }
 
 function createOrUpdateWindow($obj, text) {
