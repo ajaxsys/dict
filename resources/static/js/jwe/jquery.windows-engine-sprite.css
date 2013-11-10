@@ -1,0 +1,9 @@
+.top_left = { background: url('sprites.png') no-repeat -0px -0px; width: 9px; height: 23px; }
+.top_mid = { background: url('sprites.png') no-repeat -9px -0px; width: 1px; height: 23px; }
+.top_right = { background: url('sprites.png') no-repeat -10px -0px; width: 9px; height: 23px; }
+.bottom_mid = { background: url('sprites.png') no-repeat -19px -0px; width: 1px; height: 19px; }
+.sizer = { background: url('sprites.png') no-repeat -20px -0px; width: 9px; height: 19px; }
+.maximize = { background: url('sprites.png') no-repeat -29px -0px; width: 14px; height: 15px; }
+.minimize = { background: url('sprites.png') no-repeat -0px -23px; width: 14px; height: 15px; }
+.close = { background: url('sprites.png') no-repeat -14px -23px; width: 14px; height: 14px; }
+

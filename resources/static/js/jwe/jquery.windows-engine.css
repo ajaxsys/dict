@@ -19,9 +19,12 @@
 	top:200;
 	font-size:13px;
 	font-family:verdana;
-	box-shadow:-2px -2px 30px 5px #C9C9C9;
-	-webkit-box-shadow:-2px -2px 30px 5px #C9C9C9;
-	-moz-box-shadow:-2px -2px 30px 5px #C9C9C9;
+}
+
+.window-shaddow {
+	box-shadow:0px 45px 30px 0px #C9C9C9;
+	-webkit-box-shadow:0px 45px 30px 0px #C9C9C9;
+	-moz-box-shadow:0px 45px 30px 0px #C9C9C9;
 }
 
 .window-titleBar
@@ -37,14 +40,12 @@
     text-align:center;
     padding-top:5px;
     background: transparent url(default/top_mid.gif) repeat-x;
-	cursor: move;
+   	cursor: move;
 }
 
 .window-titleBar-leftCorner
 {
-	background: #E4E4E4 url(default/top_left.gif) no-repeat;			
-    width:9px;
-    height:23px;
+	background: transparent url(default/sprites.png) no-repeat -0px -0px; width: 9px; height: 23px;	/*top_left #E4E4E4 */ 
     position: absolute;
 	left: 0px;
 	top: 0px;
@@ -52,9 +53,7 @@
 
 .window-titleBar-rightCorner
 {
-	background: #E4E4E4 url(default/top_right.gif) no-repeat;			
-    width:9px;
-    height:23px;
+	background: transparent url(default/sprites.png) no-repeat -10px -0px; width: 9px; height: 23px; /*top_right #E4E4E4*/
     position: absolute;
 	right: 0px;
 	top: 0px;
@@ -62,9 +61,7 @@
 
 .window-minimizeButton
 {
-    width: 14px;
-	height: 14px;
-	background: transparent url(default/minimize.gif) no-repeat 0 0;
+	background: transparent url(default/sprites.png) no-repeat -0px -23px; width: 14px; height: 14px;/*minimize*/
 	position: absolute;
 	left: 35px;
 	top: 5px;
@@ -73,9 +70,7 @@
 
 .window-maximizeButton
 {
-    width: 14px;
-	height: 14px;
-    background: transparent url(default/maximize.gif) no-repeat 0 0;
+    background: transparent url(default/sprites.png) no-repeat -29px -0px; width: 14px; height: 14px;/*maximize*/
 	position: absolute;
 	left: 55px;
 	top: 5px;
@@ -84,9 +79,7 @@
 
 .window-closeButton
 {
-    width: 14px;
-	height: 14px;
-	background: transparent url(default/close.gif) no-repeat 0 0;	
+	background: transparent url(default/sprites.png) no-repeat -14px -23px; width: 14px; height: 14px;	/*close*/
 	position: absolute;
 	left: 15px;
 	top: 5px;
@@ -109,7 +102,7 @@
 
 .window-statusBar
 {
-	height:19px;
+	height: 19px;
     position: relative;
     border-left:1px solid #AAA;
 	overflow: hidden;
@@ -118,9 +111,7 @@
 
 .window-resizeIcon
 {
-    width: 9px;
-	height: 19px;
-    background: transparent url(default/sizer.gif) no-repeat;
+    background: transparent url(default/sprites.png) no-repeat -20px -0px; width: 9px; height: 19px;/*sizer*/
 	position: absolute;
 	right: 0px;
 	bottom: 0px;

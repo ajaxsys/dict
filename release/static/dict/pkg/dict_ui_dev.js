@@ -733,10 +733,14 @@ $.extend({
             if ($obj.data("state") === "minimized") {
                 $obj.data("state", "normal");
                 $obj.css("height", $obj.data("lastHeight"));
-                $obj.find(".window-content").slideToggle("slow");
+                $obj.find(".window-content").slideToggle("slow", function(){
+                    $obj.addClass('window-shaddow');
+                });
             }
             else if ($obj.data("state") === "normal") {
                 $obj.data("state", "minimized");
+                $obj.removeClass('window-shaddow');
+
                 $obj.find(".window-content").slideToggle("slow", function() { $obj.css("height", 0); });
             }
             else {
@@ -758,6 +762,7 @@ $.extend({
                 $obj.find(".window-minimizeButton").click();
             }
             else if ($obj.data("state") === "normal") {
+                $obj.removeClass('window-shaddow');
                 $obj.animate({
                     top: "5px",
                     left: "5px",
@@ -780,7 +785,9 @@ $.extend({
                     left: $obj.data("lastX"),
                     width: $obj.data("lastWidth"),
                     height: $obj.data("lastHeight")
-                }, "slow");
+                }, "slow", function(){
+                        $obj.addClass('window-shaddow');
+                });
                 if (options.type === "iframe") {
                     $obj.find("iframe").animate({
                         top: $obj.data("lastY"),
@@ -836,6 +843,9 @@ $.extend({
         
         //show the popup using the jquery fadeIn visual effect
         $window.fadeIn();
+
+        // add shaddow
+        $window.addClass('window-shaddow');
 
         return $window;
     },
@@ -1069,7 +1079,7 @@ $( window ).resize(function() {
 });
 
 function registSelectWord($) {
-    console.log($('body *:not('+DICT_JID+', '+DICT_JID+' *)'));
+    //console.log($('body *:not('+DICT_JID+', '+DICT_JID+' *)'));
     $(document).on('mouseup.dict','body *:not('+DICT_JID+', '+DICT_JID+' *)',function(){
         console.log('start it');
         if ($(DICT_JID).find(this).length === 0) {
@@ -1303,9 +1313,11 @@ function host(lbKey){
 (function($){
 
 // exec
-$(function(){
-    initNavi(); 
-});
+// $(function(){
+//     initNavi(); 
+// });
+
+initNavi(); 
 
 // for test
 $.extend(window.__DICT__ ,  {
@@ -1316,23 +1328,26 @@ var DICT = window.__DICT__;
 
 function initNavi(){
     console.log("Initialize navi.");
-    var $navi = $('<div style="position:fixed;top:0;left:0;z-index:2147483647;font-weight:bold;font-size:18px;">' +
-                    '<a href="#" style="text-shadow: 0 0 2px #999;color:blue;font-family:Times, serif">ON</a>' + 
-                '</div>');
+    var on='\u2602',off='\u2604',
+        $navi = $('<div style="position:fixed;top:0;left:0;z-index:2147483647;font-weight:bold;font-size:16px;">' +
+                    '<a href="#" style="text-shadow: 0 0 2px #999;color:blue;font-family:Times, serif;text-decoration:none;">'+on+'</a></div>');
     $('a', $navi).click(function(){
-        if ($(this).text()=='ON'){
-            $(this).text('OFF');
+        if ($(this).text()===on){
+            $(this).text(off);
             DICT.DICT_SERVICE=false;
             // For next start up
             $.closeWindow(DICT.DICT_ID);
         }
         else {
-            $(this).text('ON');
+            $(this).text(on);
             DICT.DICT_SERVICE=true;
         }
         return false;
     });
-    $navi.appendTo('body');
+
+    $(function(){
+        $navi.prependTo('body');
+    });
     
 }
 

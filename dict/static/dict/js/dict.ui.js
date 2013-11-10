@@ -40,7 +40,7 @@ $( window ).resize(function() {
 });
 
 function registSelectWord($) {
-    console.log($('body *:not('+DICT_JID+', '+DICT_JID+' *)'));
+    //console.log($('body *:not('+DICT_JID+', '+DICT_JID+' *)'));
     $(document).on('mouseup.dict','body *:not('+DICT_JID+', '+DICT_JID+' *)',function(){
         console.log('start it');
         if ($(DICT_JID).find(this).length === 0) {

@@ -1,9 +1,11 @@
 (function($){
 
 // exec
-$(function(){
-    initNavi(); 
-});
+// $(function(){
+//     initNavi(); 
+// });
+
+initNavi(); 
 
 // for test
 $.extend(window.__DICT__ ,  {
@@ -14,23 +16,26 @@ var DICT = window.__DICT__;
 
 function initNavi(){
     console.log("Initialize navi.");
-    var $navi = $('<div style="position:fixed;top:0;left:0;z-index:2147483647;font-weight:bold;font-size:18px;">' +
-                    '<a href="#" style="text-shadow: 0 0 2px #999;color:blue;font-family:Times, serif">ON</a>' + 
-                '</div>');
+    var on='\u2602',off='\u2604',
+        $navi = $('<div style="position:fixed;top:0;left:0;z-index:2147483647;font-weight:bold;font-size:16px;">' +
+                    '<a href="#" style="text-shadow: 0 0 2px #999;color:blue;font-family:Times, serif;text-decoration:none;">'+on+'</a></div>');
     $('a', $navi).click(function(){
-        if ($(this).text()=='ON'){
-            $(this).text('OFF');
+        if ($(this).text()===on){
+            $(this).text(off);
             DICT.DICT_SERVICE=false;
             // For next start up
             $.closeWindow(DICT.DICT_ID);
         }
         else {
-            $(this).text('ON');
+            $(this).text(on);
             DICT.DICT_SERVICE=true;
         }
         return false;
     });
-    $navi.appendTo('body');
+
+    $(function(){
+        $navi.prependTo('body');
+    });
     
 }
 

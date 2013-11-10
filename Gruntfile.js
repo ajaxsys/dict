@@ -168,6 +168,25 @@ module.exports = function(grunt) {
  //     }
  //   },
 
+    spritepacker: {
+      default_options: {
+        options: {
+          // Path to the template for generating metafile:
+          template: 'resources/static/js/jwe/jquery.windows-engine.tpl.css',
+
+          // Destination metafile:
+          destCss:  'resources/static/js/jwe/jquery.windows-engine-sprite.css',
+
+          // Base URL for sprite image, used in template
+          baseUrl: ''
+        },
+        files: {
+          'resources/static/js/jwe/default/sprites.png': ['resources/static/js/jwe/default/*.gif']
+        }
+      }
+    },
+
+
     watch: {
       src: {
         files: ['dict/static/dict/js/*.js',
@@ -179,8 +198,10 @@ module.exports = function(grunt) {
       //   files: '<%= jshint.test.src %>',
       //   tasks: ['jshint:test']
       // }
-    }
-  });
+    },
+  
+
+  }); // End grunt.initConfig
 
 
   // These plugins provide necessary tasks.
@@ -192,6 +213,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-sprite-packer');
   // TODO
   //grunt.loadNpmTasks('grunt-imagine');
 
@@ -214,6 +236,9 @@ module.exports = function(grunt) {
 
   // CSS distribution task.
   grunt.registerTask('dist-css', ['cssmin']);
+
+  // Sprite 
+  grunt.registerTask('sprite', ['spritepacker']);
 
   // Full distribution task.
   grunt.registerTask('dist', ['clean', 'copy', 'dist-css', 'dist-js']);
