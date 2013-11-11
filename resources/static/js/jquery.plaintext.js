@@ -65,13 +65,15 @@ function obj2Text(selector, option) {
                     return;
                 }
 
+                $tag2Txt.attr('title-toshow',text);
                 $tag2Txt.tipsy({
                     'trigger': 'hover',
                     'fallback': text,
                     'delayIn': option.delayIn,
                     'opacity': 1,
-                    gravity: $.fn.tipsy.autoNS,
-                    'delayOut': option.delayOut
+                    'gravity': $.fn.tipsy.autoNS,
+                    'delayOut': option.delayOut,
+                    'title': 'title-toshow',
                 }).tipsy("show");
 
             }
