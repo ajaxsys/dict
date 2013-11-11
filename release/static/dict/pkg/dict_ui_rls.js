@@ -1320,7 +1320,7 @@ function host(lbKey){
 
 (function($){
 
-// exec
+// NOTICE: As a bookmarklet, Dict always load when dom ready!!
 // $(function(){
 //     initNavi(); 
 // });
@@ -1359,9 +1359,7 @@ function initNavi(){
         return false;
     });
 
-    $(function(){
-        $navi.prependTo('body');
-    });
+    $navi.appendTo('body');// Prepend lose to other max z-index.
     
 }
 
