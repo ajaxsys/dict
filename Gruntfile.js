@@ -56,6 +56,7 @@ module.exports = function(grunt) {
           'release/static/dict/pkg/dict_ui.min.css':[
               'resources/static/js/jwe/jquery.windows-engine.css',
               'resources/static/js/tooltip/tipsy.css',
+              'dict/static/dict/css/dict.common.css',
           ],
           'release/static/dict/pkg/dict_proxy.min.css':[
               'resources/static/js/bootstrap/css/bootstrap.css',
@@ -155,6 +156,7 @@ module.exports = function(grunt) {
           //{src: ['path/**'], dest: 'dest/'}, // includes files in path and its subdirs
           //{expand: true, cwd: 'path/', src: ['**'], dest: 'dest/'}, // makes all src relative to cwd
           {expand:true, cwd: 'resources/static/js/jwe/default/',src: ['*'], dest: 'release/static/dict/pkg/default/', filter: 'isFile'}, 
+          {expand:true, cwd: 'resources/static/sprite/',src: ['*.png','*.gif'], dest: 'release/static/dict/pkg/default/', filter: 'isFile'}, 
           //{expand: true, flatten: true, src: ['path/**'], dest: 'dest/', filter: 'isFile'} // flattens results to a single level
         ]
       }
@@ -172,20 +174,35 @@ module.exports = function(grunt) {
       default_options: {
         options: {
           // Path to the template for generating metafile:
-          template: 'resources/static/js/jwe/jquery.windows-engine.tpl.css',
+          template: 'resources/static/sprite/dict-sprite.styl.tpl',
 
           // Destination metafile:
-          destCss:  'resources/static/js/jwe/jquery.windows-engine-sprite.css',
+          destCss:  'resources/static/sprite/dict-sprite.styl',
 
           // Base URL for sprite image, used in template
-          baseUrl: ''
+          baseUrl: 'default/'
         },
         files: {
-          'resources/static/js/jwe/default/sprites.png': ['resources/static/js/jwe/default/*.gif']
+          'resources/static/sprite/sprites.png': [
+            'resources/static/js/jwe/default/sprite/*.*',
+            'resources/static/images/icons/*.*',
+          ]
         }
       }
     },
 
+    stylus: {
+      compile: {
+        options: {
+          paths: ['resources/static/sprite/'],
+          import : ['dict-sprite'],
+        },
+        files: {
+          'dict/static/dict/css/dict.common.css': ['dict/static/dict/css/dict.common.styl' ], // compile and concat into single file
+          'resources/static/js/jwe/jquery.windows-engine.css': ['resources/static/js/jwe/jquery.windows-engine.styl'], 
+        }
+      }
+    },
 
     watch: {
       src: {
@@ -214,6 +231,8 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-sprite-packer');
+  grunt.loadNpmTasks('grunt-contrib-stylus');
+
   // TODO
   //grunt.loadNpmTasks('grunt-imagine');
 
@@ -238,7 +257,7 @@ module.exports = function(grunt) {
   grunt.registerTask('dist-css', ['cssmin']);
 
   // Sprite 
-  grunt.registerTask('sprite', ['spritepacker']);
+  grunt.registerTask('sprite', ['spritepacker','stylus']);
 
   // Full distribution task.
   grunt.registerTask('dist', ['clean', 'copy', 'dist-css', 'dist-js']);

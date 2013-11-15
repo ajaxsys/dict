@@ -1,119 +1,13 @@
-.modal-background
-{
-    position:fixed;
-    left:0;
-    top:0;
-    width:100%;
-    height:100%;
-    background-color:#777;
-    -moz-opacity:.50; 
-    filter:alpha(opacity=50); 
-    opacity:.50;
-}
-
-.window-container
-{
-	width:350px;
-	position:absolute;
-	left:350;
-	top:200;
-	font-size:13px;
-	font-family:verdana;
-}
-
-.window-shaddow {
-	box-shadow:0px 45px 30px 0px #C9C9C9;
-	-webkit-box-shadow:0px 45px 30px 0px #C9C9C9;
-	-moz-box-shadow:0px 45px 30px 0px #C9C9C9;
-}
-
-.window-titleBar
-{
-    height:23px;
-    margin:0 9px 0 9px;
-    text-align:center;
-}
-
-.window-titleBar-content
-{
-    height:23px;
-    text-align:center;
-    padding-top:5px;
-    background: transparent url(default/top_mid.gif) repeat-x;
-   	cursor: move;
-}
-
-.window-titleBar-leftCorner
-{
-	background: transparent url(default/sprites.png) no-repeat -0px -0px; width: 9px; height: 23px;	/*top_left #E4E4E4 */ 
-    position: absolute;
-	left: 0px;
-	top: 0px;
-}
-
-.window-titleBar-rightCorner
-{
-	background: transparent url(default/sprites.png) no-repeat -10px -0px; width: 9px; height: 23px; /*top_right #E4E4E4*/
-    position: absolute;
-	right: 0px;
-	top: 0px;
-}
-
-.window-minimizeButton
-{
-	background: transparent url(default/sprites.png) no-repeat -0px -23px; width: 14px; height: 14px;/*minimize*/
-	position: absolute;
-	left: 35px;
-	top: 5px;
-	cursor: pointer;
-}
-
-.window-maximizeButton
-{
-    background: transparent url(default/sprites.png) no-repeat -29px -0px; width: 14px; height: 14px;/*maximize*/
-	position: absolute;
-	left: 55px;
-	top: 5px;
-	cursor: pointer;
-}
-
-.window-closeButton
-{
-	background: transparent url(default/sprites.png) no-repeat -14px -23px; width: 14px; height: 14px;	/*close*/
-	position: absolute;
-	left: 15px;
-	top: 5px;
-	cursor: pointer;
-}
-
-
-.window-content
-{
-	height:100%;
-	background-color:#FFFFFF;
-	font-size:13px;
-	font-family:verdana;
-	color:#000000;
-    border-left:1px solid #AAA;
-    border-right:1px solid #AAA;
-    overflow:auto;
-}
-
-
-.window-statusBar
-{
-	height: 19px;
-    position: relative;
-    border-left:1px solid #AAA;
-	overflow: hidden;
-    background: transparent url(default/bottom_mid.gif) repeat-x;
-}
-
-.window-resizeIcon
-{
-    background: transparent url(default/sprites.png) no-repeat -20px -0px; width: 9px; height: 19px;/*sizer*/
-	position: absolute;
-	right: 0px;
-	bottom: 0px;
-	cursor: se-resize;
-}
+.modal-background{position:fixed;left:0;top:0;width:100%;height:100%;background-color:#777;-moz-opacity:.5;opacity:.5}
+.window-container{width:350px;position:absolute;left:350;top:200;font-size:13px;font-family:verdana}
+.window-shaddow{box-shadow:0 45px 30px 0 #c9c9c9;-webkit-box-shadow:0 45px 30px 0 #c9c9c9;-moz-box-shadow:0 45px 30px 0 #c9c9c9}
+.window-titleBar{height:23px;margin:0 9px 0 9px;text-align:center}
+.window-titleBar-content{height:23px;text-align:center;padding-top:5px;background:transparent url("default/top_mid.gif") repeat-x;cursor:move}
+.window-titleBar-leftCorner{background:transparent url('default/sprites.png') no-repeat 0px 0px; width: 9px; height:23px;;position:absolute;left:0;top:0}
+.window-titleBar-rightCorner{background:transparent url('default/sprites.png') no-repeat -9px 0px; width: 9px; height:23px;;position:absolute;right:0;top:0}
+.window-minimizeButton{background:transparent url('default/sprites.png') no-repeat -14px -43px; width: 14px; height:15px;;position:absolute;left:35px;top:5px;cursor:pointer}
+.window-maximizeButton{background:transparent url('default/sprites.png') no-repeat 0px -43px; width: 14px; height:15px;;position:absolute;left:55px;top:5px;cursor:pointer}
+.window-closeButton{background:transparent url('default/sprites.png') no-repeat -28px -43px; width: 14px; height:14px;;position:absolute;left:15px;top:5px;cursor:pointer}
+.window-content{height:100%;background-color:#fff;font-size:13px;font-family:verdana;color:#000;border-left:1px solid #aaa;border-right:1px solid #aaa;overflow:auto}
+.window-statusBar{height:19px;position:relative;border-left:1px solid #aaa;overflow:hidden;background:transparent url("default/bottom_mid.gif") repeat-x}
+.window-resizeIcon{background:transparent url('default/sprites.png') no-repeat -20px -23px; width: 9px; height:19px;;position:absolute;right:0;bottom:0;cursor:se-resize}
