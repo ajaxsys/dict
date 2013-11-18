@@ -51,14 +51,20 @@ function obj2Text(selector, option) {
         var timer = setTimeout(function(){
             if ($tag2Txt.data(TIMER)) {
                 // Support img/a tag
-                var text;
-                if ($tag2Txt.prop('tagName').toLowerCase()=='a'){
-                    text = $tag2Txt.text();
-                } else if ($tag2Txt.prop('tagName').toLowerCase()=='select'){
-                    text = $('option:selected',$tag2Txt).text();
-                } else if ($tag2Txt.prop('tagName').toLowerCase()=='img'){
-                    text = $tag2Txt.prop('alt') || $tag2Txt.prop('title');
+                var tagName = $tag2Txt.prop('tagName').toLowerCase(),
+                    text;
+                switch (tagName) {
+                    case 'a' : 
+                        text = $tag2Txt.text(); break;
+                    case 'select' : 
+                        text = $('option:selected',$tag2Txt).text();break;
+                    case 'img' : 
+                        text = $tag2Txt.prop('alt') || $tag2Txt.prop('title');break;
+                    case 'input':
+                    case 'button':
+                        text = $tag2Txt.val();break;
                 }
+                
                 console.log("Text changed to:", text);
                 if (!text) {
                     // No text, do nothing.

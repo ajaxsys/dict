@@ -155,14 +155,20 @@ function obj2Text(selector, option) {
         var timer = setTimeout(function(){
             if ($tag2Txt.data(TIMER)) {
                 // Support img/a tag
-                var text;
-                if ($tag2Txt.prop('tagName').toLowerCase()=='a'){
-                    text = $tag2Txt.text();
-                } else if ($tag2Txt.prop('tagName').toLowerCase()=='select'){
-                    text = $('option:selected',$tag2Txt).text();
-                } else if ($tag2Txt.prop('tagName').toLowerCase()=='img'){
-                    text = $tag2Txt.prop('alt') || $tag2Txt.prop('title');
+                var tagName = $tag2Txt.prop('tagName').toLowerCase(),
+                    text;
+                switch (tagName) {
+                    case 'a' : 
+                        text = $tag2Txt.text(); break;
+                    case 'select' : 
+                        text = $('option:selected',$tag2Txt).text();break;
+                    case 'img' : 
+                        text = $tag2Txt.prop('alt') || $tag2Txt.prop('title');break;
+                    case 'input':
+                    case 'button':
+                        text = $tag2Txt.val();break;
                 }
+                
                 console.log("Text changed to:", text);
                 if (!text) {
                     // No text, do nothing.
@@ -1103,7 +1109,7 @@ function registSelectWord($) {
 }
 
 function registLinkToText($) {
-    $.plaintext('body a, body img, body select');
+    $.plaintext('body a, body img, body select, body :button');
 }
 
 function createOrUpdateWindow($obj, text) {
@@ -1332,21 +1338,25 @@ function initNavi(){
     console.log("Initialize navi.");
     //var on='\u2602',off='\u2604',
     //var on='☂',off='☄',
-    var on=' O ',off=' X ',
+    var altOn='ON',altOff='OFF',
         titleOn='SecondScreen Service ON',titleOff='SecondScreen Service OFF',
-        $navi = $('<div style="position:fixed;top:0;left:0;z-index:2147483647;font-weight:bold;font-size:16px;">' +
-                    '<a href="#" style="text-shadow: 0 0 2px #999;color:blue;font-family:serif;text-decoration:none;" title="'+titleOn+'">'+on+'</a></div>');
-        console.log(on,off);
-    $('a', $navi).click(function(){
-        if ($(this).text()===on){
-            $(this).attr('title',titleOff).text(off);
-            DICT.DICT_SERVICE=false;
+        classOn='__navi_on__',classOff='__navi_off__',
+        $navi = $('<div style="position:fixed;top:0;left:0;z-index:2147483647;" class="__navi_div__"></div>'),
+        $img = $('<img>').attr('src','http://www.w3schools.com/css/img_trans.gif'),
+        $imgOn = $img.clone().addClass(classOn).prop('title',titleOn).prop('alt',altOn),
+        $imgOff = $img.clone().addClass(classOff).prop('title',titleOff).prop('alt',altOff);
+
+    $navi.append($imgOn);
+    $navi.click(function(){
+        if ($('img',$navi)[0]===$imgOn[0]){
+            $navi.empty().append($imgOff);
+            
             // For next start up
+            DICT.DICT_SERVICE=false;
             $.closeWindow(DICT.DICT_ID);
             //$(document).off('mouseenter.plaintext').off('mouseleave.plaintext');
-        }
-        else {
-            $(this).attr('title',titleOn).text(on);
+        } else {
+            $navi.empty().append($imgOn);
             DICT.DICT_SERVICE=true;
             //$(document).on('mouseenter.plaintext').on('mouseleave.plaintext');
         }
