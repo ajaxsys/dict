@@ -19,13 +19,13 @@ u[o]&&(delete u[o],c?delete n[l]:typeof n.removeAttribute!==i?n.removeAttribute(
  * Released under the MIT license
  */
 ((function (factory) {
-	if (typeof define === 'function' && define.amd) {
-		// AMD. Register as anonymous module.
-		define(['jquery'], factory);
-	} else {
+//	if (typeof define === 'function' && define.amd) {
+//		// AMD. Register as anonymous module.
+//		define(['jquery'], factory);
+//	} else {
 		// Browser globals.
 		factory(jQuery);
-	}
+//	}
 })(function ($) {
 
 	var pluses = /\+/g;
@@ -116,13 +116,13 @@ u[o]&&(delete u[o],c?delete n[l]:typeof n.removeAttribute!==i?n.removeAttribute(
  * Released under the MIT license
  */
 (function (factory) {
-    if (typeof define === 'function' && define.amd) {
-        // AMD. Register as anonymous module.
-        define(['jquery'], factory);
-    } else {
+//    if (typeof define === 'function' && define.amd) {
+//        // AMD. Register as anonymous module.
+//        define(['jquery'], factory);
+//    } else {
         // Browser globals.
         factory(jQuery);
-    }
+//    }
 })(function ($) {
 
 $.plaintext = function(selector, option) {
@@ -480,13 +480,13 @@ function obj2Text(selector, option) {
  *  Version: 1.7
  */
  (function (factory) {
-    if (typeof define === 'function' && define.amd) {
-        // AMD. Register as anonymous module.
-        define(['jquery'], factory);
-    } else {
+ //   if (typeof define === 'function' && define.amd) {
+ //       // AMD. Register as anonymous module.
+ //       define(['jquery'], factory);
+ //   } else {
         // Browser globals.
         factory(jQuery);
-    }
+ //   }
 })(function ($) {
 var jQuery = $;
 $.extend({

@@ -10,13 +10,13 @@
  *  Version: 1.7
  */
  (function (factory) {
-    if (typeof define === 'function' && define.amd) {
-        // AMD. Register as anonymous module.
-        define(['jquery'], factory);
-    } else {
+ //   if (typeof define === 'function' && define.amd) {
+ //       // AMD. Register as anonymous module.
+ //       define(['jquery'], factory);
+ //   } else {
         // Browser globals.
         factory(jQuery);
-    }
+ //   }
 })(function ($) {
 var jQuery = $;
 $.extend({
