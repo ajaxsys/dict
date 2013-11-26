@@ -109,7 +109,8 @@ u[o]&&(delete u[o],c?delete n[l]:typeof n.removeAttribute!==i?n.removeAttribute(
 }));
 
 /*
- * jQuery Replace with self text Plugin v0.1
+ * Replace with self text Plugin v0.1
+ * Use jquery.tipsy.js as default callback.
  * https://github.com/ajaxsys/jquery-plain-text
  *
  * Copyright 2013 Fang Dehui
@@ -131,10 +132,11 @@ $.plaintext = function(selector, option) {
     var defaultOption = {
         'on' : 'mouseenter.plaintext',
         'off': 'mouseleave.plaintext',
-        'delayIn' : 2000,
-        'delayOut' : 3000,
-        'color' : '#EF0FFF',
-        'bgcolor' : '#FFF'
+        'callback' : null, // NOT tipsy
+        'delayIn' : 2000, // for tipsy
+        'delayOut' : 3000, // for tipsy
+        'color' : '#EF0FFF', // for tipsy
+        'bgcolor' : '#FFF', // for tipsy
     }
     // Merge to default option
     $.extend(defaultOption, option);
@@ -181,17 +183,12 @@ function obj2Text(selector, option) {
                     return;
                 }
 
-                $tag2Txt.attr('title-toshow',text);
-                $tag2Txt.tipsy({
-                    'trigger': 'hover',
-                    'fallback': text,
-                    'delayIn': option.delayIn,
-                    'opacity': 1,
-                    'gravity': $.fn.tipsy.autoNS,
-                    'delayOut': option.delayOut,
-                    'title': 'title-toshow',
-                }).tipsy("show");
-
+                if (typeof option.callback === 'function') {
+                    callback(text, $tag2Txt, option);
+                } else {
+                    callTipsyByDefaut(text, $tag2Txt, option);
+                }
+                
             }
         }, option.delayIn);
         $tag2Txt.data(TIMER, timer);
@@ -205,6 +202,23 @@ function obj2Text(selector, option) {
     });
 }
 
+function callTipsyByDefaut(text, $tag2Txt, option) {
+    if (!$tag2Txt.attr('title-plaintext')){
+        // Init only once
+        $tag2Txt.tipsy({
+            'trigger': 'hover',
+            'fallback': text,
+            'delayIn': option.delayIn,
+            'opacity': 1,
+            'gravity': $.fn.tipsy.autoNS,
+            'delayOut': option.delayOut,
+            'title': 'title-plaintext',
+        });
+    }
+
+    $tag2Txt.attr('title-plaintext',text);
+    $tag2Txt.tipsy("show");
+}
 
 });
 
@@ -288,10 +302,22 @@ function obj2Text(selector, option) {
                 } else {
                     $tip.css({visibility: 'visible', opacity: this.options.opacity});
                 }
+
+                if (this.options.mousehold) {
+                    $tip.one('mouseenter',function(){
+                        $tip.data("mousehold", true);
+                    }).one('mouseleave', function(){
+                        $.removeData($tip, "mousehold");
+                        $tip.hide();
+                    });
+                }
             }
         },
         
         hide: function() {
+            if (this.options.mousehold && this.tip().data("mousehold")) {
+                return;
+            }
             if (this.options.fade) {
                 this.tip().stop().fadeOut(function() { $(this).remove(); });
             } else {
@@ -407,7 +433,8 @@ function obj2Text(selector, option) {
         offset: 0,
         opacity: 0.8,
         title: 'title',
-        trigger: 'hover'
+        trigger: 'hover',
+        mousehold: true
     };
     
     $.fn.tipsy.revalidate = function() {
@@ -451,20 +478,20 @@ function obj2Text(selector, option) {
      *        component.
      */
      $.fn.tipsy.autoBounds = function(margin, prefer) {
-		return function() {
-			var dir = {ns: prefer[0], ew: (prefer.length > 1 ? prefer[1] : false)},
-			    boundTop = $(document).scrollTop() + margin,
-			    boundLeft = $(document).scrollLeft() + margin,
-			    $this = $(this);
+        return function() {
+            var dir = {ns: prefer[0], ew: (prefer.length > 1 ? prefer[1] : false)},
+                boundTop = $(document).scrollTop() + margin,
+                boundLeft = $(document).scrollLeft() + margin,
+                $this = $(this);
 
-			if ($this.offset().top < boundTop) dir.ns = 'n';
-			if ($this.offset().left < boundLeft) dir.ew = 'w';
-			if ($(window).width() + $(document).scrollLeft() - $this.offset().left < margin) dir.ew = 'e';
-			if ($(window).height() + $(document).scrollTop() - $this.offset().top < margin) dir.ns = 's';
+            if ($this.offset().top < boundTop) dir.ns = 'n';
+            if ($this.offset().left < boundLeft) dir.ew = 'w';
+            if ($(window).width() + $(document).scrollLeft() - $this.offset().left < margin) dir.ew = 'e';
+            if ($(window).height() + $(document).scrollTop() - $this.offset().top < margin) dir.ns = 's';
 
-			return dir.ns + (dir.ew ? dir.ew : '');
-		}
-	};
+            return dir.ns + (dir.ew ? dir.ew : '');
+        }
+    };
     
 })(jQuery);
 
