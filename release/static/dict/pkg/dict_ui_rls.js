@@ -1254,7 +1254,7 @@ function resetPositionWhenOverflow($win){
 
 // Without any symbol
 // 。、，（）「」￥！ // NG in shift-JIS page
-var WORD_REGEX = /^[^!"#$&'\(\)=~\^\\\|@`\{\}\[\];:,\.\/\?\u3002\u3001\uFF0C\uFF08\uFF09\u300C\u300D\uFFE5\uFF01]+$/,
+var WORD_REGEX = /^[^!"#$&'\-\(\)=~\^\\\|@`\{\}\[\];:,\.\/\?\u3002\u3001\uFF0C\uFF08\uFF09\u300C\u300D\uFFE5\uFF01]+$/,
     WORD_MAX_LENGTH = 50;  
 function isWord(text){
     // Selected words in one line, 
