@@ -1129,7 +1129,7 @@ function registSelectWord($) {
                         createOrUpdateWindow($(this), text);
                 }
             }
-            return false;
+            return;
         }
         // WARN: Do not `return false` here. If so, other mouseup be affected.
     });
