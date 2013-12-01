@@ -200,13 +200,18 @@ function getWindowSizeFromCookie(){
 }
 
 function getSelectionText() {
-    var text = "";
+    // For webkit
     if (window.getSelection) {
-        text = window.getSelection().toString();
-    } else if (document.selection && document.selection.type != "Control") {
-        text = document.selection.createRange().text;
+        try {
+            return window.getSelection().toString();
+        } catch (e) {
+            console.log('Cant get selection for some reason.')
+        }
+    } 
+    // For IE
+    if (document.selection && document.selection.type != "Control") {
+        return document.selection.createRange().text;
     }
-    return text;
 }
 
 function host(lbKey){
