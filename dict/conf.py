@@ -27,6 +27,7 @@ fetch_rules = {
     'weblio':[
         weblio_sp, google_jp
     ],
+    'google_jp': [google_jp],
 }
 
 def fetch_urls(dict_name):

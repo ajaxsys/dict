@@ -3,6 +3,8 @@ import re
 import logging
 import conf
 
+import json
+
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django.http import Http404
@@ -24,11 +26,6 @@ def index(request):
     context = {}
     return render(request, 'dict/index.html', context)
 
-def query_proxy(request):
-    # TODO Get dictionary list & user settings from DB
-    context = {}
-    return render(request, 'dict/proxy.html', context)
-
 def query(request, dict_type, key):
     key = cleanKey(key)
 
@@ -43,17 +40,38 @@ def query(request, dict_type, key):
         else:
             #raise Http404
             word = {'word': key,'explain': 'Not found', 'reference':'local&internet'}
+        # change dict to object http://stackoverflow.com/questions/1305532/convert-python-dict-to-object
+        word=Struct(**word)
 
-    context = { 
-        'dict_type': dict_type, 
-        'dict' : word
-    }
-    return render(request, 'dict/query.html', context)
+    callback = request.GET.get('callback')
+    if callback is None or not callback.startswith('DICT'):
+        # Html style response
+        context = { 
+            'dict_type': dict_type, 
+            'dict' : word
+        }
+        return render(request, 'dict/query.html', context)
+    else:
+        #JSON style response
+        context = {
+            'type': dict_type, 
+            'src' : word.explain,
+            'word' : word.word,
+            'ref': word.reference
+        }
+        return HttpResponse(callback+'('+json.dumps(context)+')', mimetype="application/javascript")
+
+#########################
+# Private functions
+#########################
+class Struct:
+    def __init__(self, **entries): 
+        self.__dict__.update(entries)
 
 def cleanKey(key):
     newKey = key.lower().strip()
     if key != newKey:
-        logger.info("Change key FROM:"+key+" TO:"+newKey)
+        logger.info("Change key FROM %s TO %s", key, newKey)
 
     return key.lower().strip()
 
@@ -65,29 +83,29 @@ def fetchURL(dict_type, key):
     fetchUrls = conf.fetch_urls(dict_type)
     if fetchUrls is None :
         return None
-
+    #`q=` is called `relative quality factor`.
     hdr = {
         'User-Agent': '',
         'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-        'Accept-Charset': 'utf-8,ISO-8859-1,shift-JIS;q=0.7,*;q=0.3',
+        'Accept-Charset': 'utf-8,shift-JIS;q=0.7,*;q=0.3',
         'Accept-Encoding': 'none',
-        'Accept-Language': 'en-US,en;q=0.8',
+        'Accept-Language': 'ja,en-us,*;q=0.3',
         'Connection': 'keep-alive'
     }
 
-    fetchKey = urllib2.quote(key.encode('utf-8'))
+    fetchKey = urllib2.quote(key.encode('utf8'))
     for fetchUrl in fetchUrls:
         # Change UA
         hdr['User-Agent']=fetchUrl['ua']
         # Get URL
         url = fetchUrl['fetch_url'].replace('#key#',fetchKey)
-        logger.info( "Fetching url: " + url )
+        logger.info( "Fetching url: %s " , url )
         req = urllib2.Request(url, headers=hdr)
 
         try:
             response = urllib2.urlopen(req)
             html = response.read()
-            #logger.debug( "html: \n" + html )
+            logger.debug( "html: \n" + html )
             if html is not None:
                 return {
                     'word': key,
@@ -119,6 +137,9 @@ def getWordFromDB(dict_type,key) :
         elif isTable(dict_type, Wiktionary) :
             #word = get_object_or_404(Ewords, word=key)
             return Wiktionary.objects.get(word=key)
+        else:
+            print "Ingnore getWordFromDB" + dict_type
+            return None
     except (Weblio.DoesNotExist, Weblios.DoesNotExist, Ewords.DoesNotExist, Wiktionary.DoesNotExist):
         return None
 
@@ -127,7 +148,7 @@ def saveWordToDB(dict_type, record):
     if not DB_MODE : 
         return None
     # record is dictionary in python
-    logger.info( "Save to DB:" + dict_type + ". word:" + record['word'])
+    print "Save to DB:" + dict_type + ". word:" + record.get('word','NOT_GIVEN')
     if isTable(dict_type, Weblio) :
         obj = Weblio(word=record['word'], explain=record['explain'], reference=record['reference'])
     elif isTable(dict_type, Weblios) :
@@ -136,6 +157,9 @@ def saveWordToDB(dict_type, record):
         obj = Ewords(record.word, record.explain, record.reference)
     elif isTable(dict_type, Wiktionary) :
         obj = Wiktionary(record.word, record.explain, record.reference)
+    else: 
+        print "Ingnore saveWordToDB" + dict_type
+        return None
     obj.save()
 
 def isTable(table_name, clazz):
